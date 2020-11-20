@@ -246,6 +246,69 @@ print(fit$loadings, cutoff=0.3)
 
 ```
 
+### Seven factor extraction
+
+```{r extract7}
+
+fit <- psych::fa(r = corr.pc$rho, nfactors = 7, rotate = "Promax", fm = "pa")
+fit
+print(fit$loadings, cutoff=0.3)
+
+
+fit <- psych::fa(r = cov.dat, nfactors = 7, rotate = "Promax", fm = "pa", covar = T)
+fit
+print(fit$loadings, cutoff=0.3)
+
+
+```
+
+### Eight factor extraction
+
+```{r extract8}
+
+fit <- psych::fa(r = corr.pc$rho, nfactors = 8, rotate = "Promax", fm = "pa")
+fit
+print(fit$loadings, cutoff=0.3)
+
+
+fit <- psych::fa(r = cov.dat, nfactors = 8, rotate = "Promax", fm = "pa", covar = T)
+fit
+print(fit$loadings, cutoff=0.3)
+
+
+```
+
+### Nine factor extraction
+
+```{r extract9}
+
+fit <- psych::fa(r = corr.pc$rho, nfactors = 9, rotate = "Promax", fm = "pa")
+fit
+print(fit$loadings, cutoff=0.3)
+
+
+fit <- psych::fa(r = cov.dat, nfactors = 9, rotate = "Promax", fm = "pa", covar = T)
+fit
+print(fit$loadings, cutoff=0.3)
+
+
+```
+
+
+### Ten factor extraction
+
+```{r extract10}
+
+fit <- psych::fa(r = corr.pc$rho, nfactors = 10, rotate = "Promax", fm = "pa")
+fit
+print(fit$loadings, cutoff=0.3)
+
+
+fit <- psych::fa(r = cov.dat, nfactors = 10, rotate = "Promax", fm = "pa", covar = T)
+fit
+print(fit$loadings, cutoff=0.3)
+
+```
 
 # Selected Set of Items
 
