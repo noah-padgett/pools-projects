@@ -3,7 +3,8 @@ title: "Pilot Study: Exploratory Factor Analysis"
 author: "Shan Jiang, Laura Shero, R. Noah Padgett, & Todd Kettler"
 date: "2020-11-19"
 output:
-  html_document:
+  workflowr::wflow_html:
+    toc: true
     code_folding: hide
 ---
 
@@ -267,7 +268,7 @@ We selected the following items based on these results:
 | Q4-18 | | | |
 | Q4-19 | | | |
 
-For the item stems, please see the document [here](output/pilot-data-item-review.xlsx).
+For the item stems, please see the document [here](static/pilot-data-item-review.xlsx).
 
 
 ## Post EFA Item & Reliability Analysis

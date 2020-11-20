@@ -25,6 +25,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
@@ -269,6 +270,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -386,6 +390,14 @@ div.tocify {
 </div><!--/.navbar -->
 
 <div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
@@ -507,16 +519,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettpoolsprojectstree485625064d6f349b08e7e93b9bbffbd049c540fdtargetblank4856250a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/pools-projects/tree/485625064d6f349b08e7e93b9bbffbd049c540fd" target="_blank">4856250</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettpoolsprojectstree34e8a9d533b389e2774e85964a5fc16f4488c3bdtargetblank34e8a9da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/pools-projects/tree/34e8a9d533b389e2774e85964a5fc16f4488c3bd" target="_blank">34e8a9d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettpoolsprojectstree485625064d6f349b08e7e93b9bbffbd049c540fdtargetblank4856250a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettpoolsprojectstree34e8a9d533b389e2774e85964a5fc16f4488c3bdtargetblank34e8a9da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/noah-padgett/pools-projects/tree/485625064d6f349b08e7e93b9bbffbd049c540fd" target="_blank">4856250</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/noah-padgett/pools-projects/tree/34e8a9d533b389e2774e85964a5fc16f4488c3bd" target="_blank">34e8a9d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -527,6 +539,7 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Unstaged changes:
+    Modified:   analysis/index.Rmd
     Modified:   analysis/pilot-study-CFA.Rmd
     Modified:   analysis/pilot-study-EFA.Rmd
 
@@ -572,6 +585,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/noah-padgett/pools-projects/blob/34e8a9d533b389e2774e85964a5fc16f4488c3bd/analysis/pilot-study-CFA.Rmd" target="_blank">34e8a9d</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-11-19
+</td>
+<td>
+updated pilot FAs
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/noah-padgett/pools-projects/34e8a9d533b389e2774e85964a5fc16f4488c3bd/docs/pilot-study-CFA.html" target="_blank">34e8a9d</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-11-19
+</td>
+<td>
+updated pilot FAs
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/noah-padgett/pools-projects/blob/485625064d6f349b08e7e93b9bbffbd049c540fd/analysis/pilot-study-CFA.Rmd" target="_blank">4856250</a>
 </td>
 <td>
@@ -611,12 +658,12 @@ pilot-efa-results
 <div id="data" class="section level1">
 <h1>Data</h1>
 <pre class="r"><code>source(&quot;code/load_packages.R&quot;)</code></pre>
-<pre><code>-- Attaching packages -------------------------------- tidyverse 1.3.0 --</code></pre>
+<pre><code>-- Attaching packages --------------------------------------------- tidyverse 1.3.0 --</code></pre>
 <pre><code>v ggplot2 3.3.2     v purrr   0.3.4
 v tibble  3.0.3     v dplyr   1.0.1
 v tidyr   1.1.1     v stringr 1.4.0
 v readr   1.3.1     v forcats 0.5.0</code></pre>
-<pre><code>-- Conflicts ----------------------------------- tidyverse_conflicts() --
+<pre><code>-- Conflicts ------------------------------------------------ tidyverse_conflicts() --
 x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()</code></pre>
 <pre><code>
@@ -1716,6 +1763,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

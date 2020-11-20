@@ -4,6 +4,7 @@ site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: false
+    code_folding: hide
 editor_options:
   chunk_output_type: console
 ---
@@ -16,7 +17,7 @@ POOLS is organized to measure four constructs
 3. Interactiveness of Learning, and
 4. Engagedness of Learning.
 
-An overview of the results of the first item review from subject matter experts can be obtained [here](item-review-1/Overivew of Item Review Results.docx).
+An overview of the results of the first item review from subject matter experts can be obtained [here](static/Overivew of Item Review Results.docx).
 
 
 * [Construct Definitions](pools-definitions.html)

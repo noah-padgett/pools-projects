@@ -3,8 +3,9 @@ title: "Pilot Study: Confirmatory Factor Analysis"
 author: "R. Noah Padgett"
 date: "2020-11-16"
 output:
-  html_document:
-    code_folding: hide
+  workflowr::wflow_html:
+    toc: true
+    code_folding: show
 ---
 
 # Data
