@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Pilot Study Power Calculation</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">POOLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Pilot Study Power Calculation</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-11-16
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>pools-projects/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20201007code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20201007)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20201007code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20201007)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong76332d3"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 76332d3 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrong76332d3" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version 76332d3. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
+
+Untracked files:
+    Untracked:  IRB/
+    Untracked:  analysis/pilot-study-CFA.Rmd
+    Untracked:  analysis/pilot-study-EFA.Rmd
+    Untracked:  analysis/pilot-study-data-management.Rmd
+    Untracked:  analysis/pilot-study-power-calculation.Rmd
+    Untracked:  analysis/pools-definitions.Rmd
+    Untracked:  analysis/power-calculation.Rmd
+    Untracked:  code/load_packages.R
+    Untracked:  code/r_functions.R
+    Untracked:  code/test_data.Rmd
+    Untracked:  code/test_data.nb.html
+    Untracked:  data/data-2020-11-04/
+    Untracked:  data/data-2020-11-16/
+    Untracked:  data/sim_test.RData
+    Untracked:  item-review-1/
+    Untracked:  item-review-2/
+    Untracked:  papers/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+    Modified:   analysis/index.Rmd
+    Modified:   pools-projects.Rproj
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="pools-model" class="section level1">
+<h1>POOLS Model</h1>
+<p>The POOLS model is generally a four factor model with 10-14 items per factor.</p>
+</div>
+<div id="power-analysis-simulation-study" class="section level1">
+<h1>Power Analysis Simulation Study</h1>
+<p>Here, we vary the sample size between 100 and 1000 (steps of 50) to determine the approximate minimal sample size needed to reject that the data fails to fit the model.</p>
+<div id="populaiton-model" class="section level2">
+<h2>Populaiton Model</h2>
+<pre class="r"><code>pop_model &lt;- &quot;
+  # POOLS Items (~40)
+  EF =~ .6*p11 + .6*p12 + .6*p13 + .6*p14 + .6*p15 + .6*p16 + .6*p17 + .6*p18 + .6*p19 + .6*p110 + .6*p111 + .6*p112 + .6*p113 + .6*p114 + .6*p115 + .6*p116 + .6*p117 + .6*p118 + .6*p119
+  ST =~ .6*p21 + .6*p22 + .6*p23 + .6*p24 + .6*p25 + .6*p26 + .6*p27 + .6*p28 + .6*p29 + .6*p210 + .6*p211 + .6*p212
+  IN =~ .6*p31 + .6*p32 + .6*p33 + .6*p34 + .6*p35 + .6*p36 + .6*p37 + .6*p38 + .6*p39 + .6*p310 + .6*p311
+  EN =~ .6*p41 + .6*p42 + .6*p43 + .6*p44 + .6*p45 + .6*p46 + .6*p47 + .6*p48 + .6*p49 + .6*p410 + .6*p411 + .6*p412 + .6*p413 + .6*p414 + .6*p415
+  
+  # Latent Variable Covariance Matrix
+  #   POOLS
+  EF ~~ 1*EF + .3*ST + .2*In + .2*EN
+  ST ~~ 1*ST + .1*IN + .3*EN
+  IN ~~ 1*IN + .3*EN
+  EN ~~ 1*EN
+  
+&quot;
+dat &lt;- simulateData(pop_model, model.type = &quot;sem&quot;)
+
+#Impose missing
+datmiss &lt;- imposeMissing(
+  dat, pmMCAR=0.10, nforms = 7,
+  itemGroups = list(c(1:58),c(), c(), c(),
+                    c(1:19),c(20:31),
+                    c(32:43), c(44:58)))
+
+
+naniar::vis_miss(datmiss)</code></pre>
+<p><img src="figure/pilot-study-power-calculation.Rmd/sim-1.png" width="100%" height="400px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="estimation-model" class="section level2">
+<h2>Estimation Model</h2>
+<p>NOT RUN</p>
+<pre class="r"><code>est_model &lt;- &#39;
+  # 1. Latent variable definition
+  #   POOLS
+  EF =~ NA*p11 + p12 + p13 + p14 + p15 + p16 + p17 + p18 + p19 + p110 + p111 + p112 + p113 + p114 + p115 + p116 + p117 + p118 + p119
+  ST =~ NA*p21 + p22 + p23 + p24 + p25 + p26 + p27 + p28 + p29 + p210 + p211 + p212
+  IN =~ NA*p31 + p32 + p33 + p34 + p35 + p36 + p37 + p38 + p39 + p310 + p311
+  EN =~ NA*p41 + p42 + p43 + p44 + p45 + p46 + p47 + p48 + p49 + p410 + p411 + p412 + p413 + p414 + p415
+
+  # 2. Latent variable covariances
+  #   POOLS
+  EF ~~ 1*EF + ST + IN + EN
+  ST ~~ 1*ST + IN + EN
+  IN ~~ 1*IN + EN
+  EN ~~ 1*EN
+
+&#39;
+
+# use missing = &quot;ML&quot; for FIML
+fit &lt;- cfa(est_model, datmiss, estimator = &quot;ML&quot;, missing = &quot;ML&quot;)
+summary(fit, standardized=T, fit.measures=T)
+
+# ================================== #
+# funciton:
+#   data_function_categorization()
+#
+# Purpose:
+#   categorize the continuous response 
+# into the 5 discrete categories we
+# will observe in the analysis.
+# We plan to treat the data as continuous.
+# But, we will also use a robust estimation
+# method DWLS and 
+# PML (pairwise maximum likelihood)
+data_function_categorization &lt;- function(data){
+  tauCreate &lt;- function(x){
+    e &lt;- rnorm(4,0, 0.01)
+    BREAKS &lt;- c(-Inf, -1.4+e[1], -0.4+e[2], 0.2+e[3], 1+e[4], Inf)
+    
+    x &lt;- cut(x,
+             breaks=BREAKS,
+             labels = c(-2, -1, 0, 1, 2))
+    as.numeric(x)-3 # center at 0
+  }
+  data[,1:58] &lt;- apply(data[,1:58], 2, tauCreate)
+  data
+}
+
+
+missdata_mech &lt;- miss(
+  pmMCAR=0.10, nforms = 7,
+  itemGroups = list(c(1:58),c(), c(), c(),
+                    c(1:19),c(20:31),
+                    c(32:43), c(44:58))
+)
+
+Nvec &lt;- seq(100, 500, 50)
+Repvec &lt;- rep(50, length(Nvec))
+sim_res &lt;- sim(
+  nRep = NULL, n = rep(Nvec,5),
+  lavaanfun = &quot;sem&quot;,
+  model = list(model=est_model, estimator = &quot;ML&quot;, missing = &quot;ML&quot;),
+  generate = pop_model,
+  miss = missdata_mech,
+  datafun = data_function_categorization
+)
+summary(sim_res)
+plotPower(sim_res, &quot;EF=~p11&quot;)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18363)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] xtable_1.8-4      kableExtra_1.1.0  readxl_1.3.1      nFactors_2.4.1   
+ [5] lattice_0.20-41   psych_2.0.7       psychometric_2.2  multilevel_2.6   
+ [9] MASS_7.3-51.6     nlme_3.1-148      mvtnorm_1.1-1     ggcorrplot_0.1.3 
+[13] naniar_0.6.0      simsem_0.5-15     lavaanPlot_0.5.1  semTools_0.5-3   
+[17] lavaan_0.6-7      data.table_1.13.0 patchwork_1.0.1   forcats_0.5.0    
+[21] stringr_1.4.0     dplyr_1.0.1       purrr_0.3.4       readr_1.3.1      
+[25] tidyr_1.1.1       tibble_3.0.3      ggplot2_3.3.2     tidyverse_1.3.0  
+[29] workflowr_1.6.2  
+
+loaded via a namespace (and not attached):
+ [1] fs_1.5.0           lubridate_1.7.9    webshot_0.5.2      RColorBrewer_1.1-2
+ [5] httr_1.4.2         rprojroot_1.3-2    tools_4.0.2        backports_1.1.7   
+ [9] R6_2.4.1           DBI_1.1.0          colorspace_1.4-1   withr_2.2.0       
+[13] tidyselect_1.1.0   mnormt_2.0.2       emmeans_1.4.8      compiler_4.0.2    
+[17] git2r_0.27.1       cli_2.0.2          rvest_0.3.6        xml2_1.3.2        
+[21] sandwich_2.5-1     labeling_0.3       scales_1.1.1       digest_0.6.25     
+[25] pbivnorm_0.6.0     rmarkdown_2.5      pkgconfig_2.0.3    htmltools_0.5.0   
+[29] dbplyr_1.4.4       htmlwidgets_1.5.1  rlang_0.4.7        rstudioapi_0.11   
+[33] farver_2.0.3       visNetwork_2.0.9   generics_0.0.2     zoo_1.8-8         
+[37] jsonlite_1.7.0     magrittr_1.5       Matrix_1.2-18      Rcpp_1.0.5        
+[41] munsell_0.5.0      fansi_0.4.1        visdat_0.5.3       lifecycle_0.2.0   
+[45] stringi_1.4.6      multcomp_1.4-13    yaml_2.2.1         grid_4.0.2        
+[49] blob_1.2.1         parallel_4.0.2     promises_1.1.1     crayon_1.3.4      
+[53] haven_2.3.1        splines_4.0.2      hms_0.5.3          tmvnsim_1.0-2     
+[57] knitr_1.29         pillar_1.4.6       estimability_1.3   codetools_0.2-16  
+[61] stats4_4.0.2       reprex_0.3.0       glue_1.4.1         evaluate_0.14     
+[65] modelr_0.1.8       vctrs_0.3.2        httpuv_1.5.4       cellranger_1.1.0  
+[69] gtable_0.3.0       assertthat_0.2.1   xfun_0.19          broom_0.7.0       
+[73] coda_0.19-3        later_1.1.0.1      viridisLite_0.3.0  survival_3.2-3    
+[77] DiagrammeR_1.0.6.1 TH.data_1.0-10     ellipsis_0.3.1    </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

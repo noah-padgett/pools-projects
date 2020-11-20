@@ -8,4 +8,29 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+Welcome to our research website for the development and use of the __Perceptions of Online Learning Scale__ (POOLS).
+POOLS is organized to measure four constructs
+
+1. Effectivenss of Learning,
+2. Student Centeredness, 
+3. Interactiveness of Learning, and
+4. Engagedness of Learning.
+
+An overview of the results of the first item review from subject matter experts can be obtained [here](item-review-1/Overivew of Item Review Results.docx).
+
+
+* [Construct Definitions](pools-definitions.html)
+
+
+# Sampling and Study Design
+
+* [Power Analysis for Planned Missingness](power-calculation.html)
+
+# Pilot Study
+
+* [Power Analysis for Pilot Data](pilot-study-power-calculation.html)
+
+* [Exploratory Factor Analysis](pilot-study-EFA.html)
+
+* [Confirmatory Factor Analysis](pilot-study-CFA.html)
+

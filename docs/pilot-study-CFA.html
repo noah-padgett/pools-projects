@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="R. Noah Padgett" />
+
+<meta name="date" content="2020-11-16" />
+
+<title>Pilot Study: Confirmatory Factor Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">POOLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Pilot Study: Confirmatory Factor Analysis</h1>
+<h4 class="author">R. Noah Padgett</h4>
+<h4 class="date">2020-11-16</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-11-19
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>pools-projects/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20201007code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20201007)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20201007code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20201007)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong76332d3"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 76332d3 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrong76332d3" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version 76332d3. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  IRB/
+    Untracked:  analysis/pilot-study-CFA.Rmd
+    Untracked:  analysis/pilot-study-EFA.Rmd
+    Untracked:  analysis/pilot-study-data-management.Rmd
+    Untracked:  analysis/pilot-study-power-calculation.Rmd
+    Untracked:  analysis/pools-definitions.Rmd
+    Untracked:  analysis/power-calculation.Rmd
+    Untracked:  code/load_packages.R
+    Untracked:  code/r_functions.R
+    Untracked:  code/test_data.Rmd
+    Untracked:  code/test_data.nb.html
+    Untracked:  data/data-2020-11-04/
+    Untracked:  data/data-2020-11-16/
+    Untracked:  data/pilot-data-item-review.xlsx
+    Untracked:  data/sim_test.RData
+    Untracked:  data/~$pilot-data-item-review.xlsx
+    Untracked:  item-review-1/
+    Untracked:  item-review-2/
+    Untracked:  output/pilot-data-item-review.xlsx
+    Untracked:  papers/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+    Modified:   analysis/index.Rmd
+    Modified:   pools-projects.Rproj
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<pre class="r"><code>source(&quot;code/load_packages.R&quot;)</code></pre>
+<pre><code>-- Attaching packages -------------------------------- tidyverse 1.3.0 --</code></pre>
+<pre><code>v ggplot2 3.3.2     v purrr   0.3.4
+v tibble  3.0.3     v dplyr   1.0.1
+v tidyr   1.1.1     v stringr 1.4.0
+v readr   1.3.1     v forcats 0.5.0</code></pre>
+<pre><code>-- Conflicts ----------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<pre><code>
+Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:dplyr&#39;:
+
+    between, first, last</code></pre>
+<pre><code>The following object is masked from &#39;package:purrr&#39;:
+
+    transpose</code></pre>
+<pre><code>This is lavaan 0.6-7</code></pre>
+<pre><code>lavaan is BETA software! Please report any bugs.</code></pre>
+<pre><code> </code></pre>
+<pre><code>###############################################################################</code></pre>
+<pre><code>This is semTools 0.5-3</code></pre>
+<pre><code>All users of R (or SEM) are invited to submit functions or ideas for functions.</code></pre>
+<pre><code>###############################################################################</code></pre>
+<pre><code>
+Attaching package: &#39;semTools&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:readr&#39;:
+
+    clipboard</code></pre>
+<pre><code>Warning: package &#39;MIIVsem&#39; was built under R version 4.0.3</code></pre>
+<pre><code>This is MIIVsem 0.5.5</code></pre>
+<pre><code>MIIVsem is BETA software! Please report any bugs.</code></pre>
+<pre><code> </code></pre>
+<pre><code>#################################################################</code></pre>
+<pre><code>This is simsem 0.5-15</code></pre>
+<pre><code>simsem is BETA software! Please report any bugs.</code></pre>
+<pre><code>simsem was first developed at the University of Kansas Center for</code></pre>
+<pre><code>Research Methods and Data Analysis, under NSF Grant 1053160.</code></pre>
+<pre><code>#################################################################</code></pre>
+<pre><code>
+Attaching package: &#39;simsem&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:lavaan&#39;:
+
+    inspect</code></pre>
+<pre><code>Warning: package &#39;naniar&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Warning: package &#39;ggcorrplot&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: multilevel</code></pre>
+<pre><code>Loading required package: nlme</code></pre>
+<pre><code>
+Attaching package: &#39;nlme&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:dplyr&#39;:
+
+    collapse</code></pre>
+<pre><code>Loading required package: MASS</code></pre>
+<pre><code>
+Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:patchwork&#39;:
+
+    area</code></pre>
+<pre><code>The following object is masked from &#39;package:dplyr&#39;:
+
+    select</code></pre>
+<pre><code>
+Attaching package: &#39;psychometric&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:ggplot2&#39;:
+
+    alpha</code></pre>
+<pre><code>
+Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:psychometric&#39;:
+
+    alpha</code></pre>
+<pre><code>The following object is masked from &#39;package:simsem&#39;:
+
+    sim</code></pre>
+<pre><code>The following object is masked from &#39;package:semTools&#39;:
+
+    skew</code></pre>
+<pre><code>The following object is masked from &#39;package:lavaan&#39;:
+
+    cor2cov</code></pre>
+<pre><code>The following objects are masked from &#39;package:ggplot2&#39;:
+
+    %+%, alpha</code></pre>
+<pre><code>Warning: package &#39;nFactors&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: lattice</code></pre>
+<pre><code>
+Attaching package: &#39;nFactors&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:lattice&#39;:
+
+    parallel</code></pre>
+<pre><code>
+Attaching package: &#39;kableExtra&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:dplyr&#39;:
+
+    group_rows</code></pre>
+<pre class="r"><code>mydata &lt;- read.table(&quot;data/data-2020-11-16/pools_data_split2_2020_11_16.txt&quot;, sep=&quot;\t&quot;, header=T)
+
+
+# transform responses to (-2, 2) scale
+mydata[, 7:63] &lt;- apply(mydata[,7:63], 2, function(x){x-3})</code></pre>
+<div id="data-summary" class="section level2">
+<h2>Data Summary</h2>
+<pre class="r"><code>psych::describe(
+  mydata[, c(paste0(&quot;Q4_&quot;,c(1:5,8:11, 15:19)),
+             paste0(&quot;Q5_&quot;,c(1:6, 8, 12)),
+             paste0(&quot;Q6_&quot;,c(1:8, 11)),
+             paste0(&quot;Q7_&quot;,c(2, 4:5, 7:8, 12:14)))]
+)</code></pre>
+<pre><code>      vars   n  mean   sd median trimmed  mad min max range  skew kurtosis   se
+Q4_1     1 312 -0.62 0.85   -1.0   -0.63 1.48  -2   2     4  0.28     0.06 0.05
+Q4_2     2 312 -0.80 0.78   -1.0   -0.82 0.00  -2   2     4  0.64     1.07 0.04
+Q4_3     3 312 -0.54 0.85   -1.0   -0.54 1.48  -2   2     4  0.35     0.47 0.05
+Q4_4     4 312 -0.47 0.85    0.0   -0.46 1.48  -2   2     4 -0.01     0.12 0.05
+Q4_5     5 312 -0.75 0.87   -1.0   -0.81 1.48  -2   2     4  0.61     0.32 0.05
+Q4_8     6 312 -0.81 0.85   -1.0   -0.86 1.48  -2   2     4  0.50     0.16 0.05
+Q4_9     7 312 -0.61 0.97   -1.0   -0.66 1.48  -2   2     4  0.45    -0.29 0.05
+Q4_10    8 312 -0.46 0.80    0.0   -0.41 0.00  -2   2     4 -0.19     0.30 0.05
+Q4_11    9 312 -0.52 0.95   -1.0   -0.56 1.48  -2   2     4  0.26    -0.26 0.05
+Q4_15   10 312 -0.71 0.88   -1.0   -0.75 1.48  -2   2     4  0.34    -0.32 0.05
+Q4_16   11 312 -0.67 0.93   -1.0   -0.72 1.48  -2   2     4  0.23    -0.50 0.05
+Q4_17   12 312 -0.90 0.93   -1.0   -0.99 1.48  -2   2     4  0.53    -0.47 0.05
+Q4_18   13 312 -0.72 0.79   -1.0   -0.74 0.00  -2   2     4  0.49     0.33 0.04
+Q4_19   14 312 -0.51 0.97   -0.5   -0.54 0.74  -2   2     4  0.22    -0.38 0.06
+Q5_1    15 312 -0.47 0.95   -1.0   -0.49 1.48  -2   2     4  0.19    -0.49 0.05
+Q5_2    16 312 -0.04 1.01    0.0    0.01 1.48  -2   2     4 -0.20    -0.49 0.06
+Q5_3    17 312 -0.41 1.04    0.0   -0.43 1.48  -2   2     4  0.26    -0.52 0.06
+Q5_4    18 312  0.46 1.10    1.0    0.55 0.00  -2   2     4 -0.80    -0.15 0.06
+Q5_5    19 312  0.45 1.06    1.0    0.52 0.00  -2   2     4 -0.78    -0.16 0.06
+Q5_6    20 312 -0.15 0.92    0.0   -0.14 1.48  -2   2     4  0.03    -0.07 0.05
+Q5_8    21 312 -0.16 1.07    0.0   -0.13 1.48  -2   2     4 -0.09    -0.66 0.06
+Q5_12   22 312 -0.20 1.01    0.0   -0.18 1.48  -2   2     4 -0.10    -0.29 0.06
+Q6_1    23 312 -1.32 0.86   -1.5   -1.48 0.74  -2   2     4  1.52     2.55 0.05
+Q6_2    24 312 -0.96 0.91   -1.0   -1.07 0.00  -2   2     4  0.98     0.92 0.05
+Q6_3    25 312 -1.01 0.92   -1.0   -1.13 1.48  -2   2     4  1.03     1.03 0.05
+Q6_4    26 312 -0.89 0.94   -1.0   -0.99 1.48  -2   2     4  0.84     0.64 0.05
+Q6_5    27 312 -0.61 1.10   -1.0   -0.69 1.48  -2   2     4  0.57    -0.45 0.06
+Q6_6    28 312 -1.18 0.79   -1.0   -1.29 0.00  -2   2     4  1.08     1.68 0.04
+Q6_7    29 312 -0.89 0.88   -1.0   -0.95 1.48  -2   2     4  0.61     0.19 0.05
+Q6_8    30 312 -0.85 0.83   -1.0   -0.90 0.00  -2   2     4  0.70     0.77 0.05
+Q6_11   31 312 -0.31 0.98    0.0   -0.30 1.48  -2   2     4 -0.11    -0.29 0.06
+Q7_2    32 312 -0.35 0.89    0.0   -0.33 0.00  -2   2     4 -0.35    -0.09 0.05
+Q7_4    33 312 -0.21 0.94    0.0   -0.18 1.48  -2   2     4 -0.07    -0.15 0.05
+Q7_5    34 312 -0.21 0.94    0.0   -0.19 0.00  -2   2     4 -0.14     0.12 0.05
+Q7_7    35 312  0.57 1.07    1.0    0.66 0.00  -2   2     4 -0.86     0.08 0.06
+Q7_8    36 312 -0.19 0.94    0.0   -0.16 0.00  -2   2     4 -0.07     0.03 0.05
+Q7_12   37 312  0.38 1.07    1.0    0.44 1.48  -2   2     4 -0.55    -0.17 0.06
+Q7_13   38 312  0.49 1.11    1.0    0.56 1.48  -2   2     4 -0.50    -0.42 0.06
+Q7_14   39 312  0.56 1.04    1.0    0.64 1.48  -2   2     4 -0.69     0.00 0.06</code></pre>
+</div>
+</div>
+<div id="cfa" class="section level1">
+<h1>CFA</h1>
+<div id="model-1" class="section level2">
+<h2>Model 1</h2>
+<div id="maximum-likelihood" class="section level3">
+<h3>Maximum Likelihood</h3>
+<pre class="r"><code>mod1 &lt;- &quot;
+EL =~ Q4_1 + Q4_2 + Q4_3 + Q4_4 + Q4_5 + Q4_8 + Q4_9 + Q4_10 + Q4_11 + Q4_15 + Q4_16 + Q4_17 + Q4_18 + Q4_19
+SC =~ Q5_1 + Q5_2 + Q5_3 + Q5_4 + Q5_5 + Q5_6 + Q5_8 + Q5_12
+IN =~ Q6_1 + Q6_2 + Q6_3 + Q6_4 + Q6_5 + Q6_6 + Q6_7 + Q6_8 + Q6_11
+EN =~ Q7_2 + Q7_4 + Q7_5 + Q7_7 + Q7_8 + Q7_12 + Q7_13 + Q7_14
+
+EL ~~ EL + SC + IN + EN
+SC ~~ SC + IN + EN
+IN ~~ IN + EN
+EN ~~ EN
+&quot;
+
+fit1 &lt;- lavaan::cfa(mod1, data=mydata)
+summary(fit1, standardized=T, fit.measures=T)</code></pre>
+<pre><code>lavaan 0.6-7 ended normally after 69 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of free parameters                         84
+                                                      
+  Number of observations                           312
+                                                      
+Model Test User Model:
+                                                      
+  Test statistic                              2124.858
+  Degrees of freedom                               696
+  P-value (Chi-square)                           0.000
+
+Model Test Baseline Model:
+
+  Test statistic                              8846.565
+  Degrees of freedom                               741
+  P-value                                        0.000
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.824
+  Tucker-Lewis Index (TLI)                       0.812
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -13071.075
+  Loglikelihood unrestricted model (H1)     -12008.646
+                                                      
+  Akaike (AIC)                               26310.149
+  Bayesian (BIC)                             26624.561
+  Sample-size adjusted Bayesian (BIC)        26358.142
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.081
+  90 Percent confidence interval - lower         0.077
+  90 Percent confidence interval - upper         0.085
+  P-value RMSEA &lt;= 0.05                          0.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.080
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  EL =~                                                                 
+    Q4_1              1.000                               0.658    0.774
+    Q4_2              0.891    0.062   14.261    0.000    0.587    0.750
+    Q4_3              1.023    0.067   15.358    0.000    0.674    0.796
+    Q4_4              1.034    0.066   15.544    0.000    0.681    0.804
+    Q4_5              0.990    0.069   14.257    0.000    0.652    0.749
+    Q4_8              0.939    0.069   13.689    0.000    0.618    0.725
+    Q4_9              1.008    0.078   12.867    0.000    0.664    0.688
+    Q4_10             0.930    0.064   14.644    0.000    0.613    0.766
+    Q4_11             1.088    0.076   14.348    0.000    0.716    0.753
+    Q4_15             0.963    0.071   13.544    0.000    0.634    0.718
+    Q4_16             0.941    0.076   12.408    0.000    0.620    0.667
+    Q4_17             0.856    0.077   11.130    0.000    0.563    0.607
+    Q4_18             0.980    0.062   15.887    0.000    0.645    0.818
+    Q4_19             1.115    0.077   14.418    0.000    0.734    0.756
+  SC =~                                                                 
+    Q5_1              1.000                               0.547    0.575
+    Q5_2              1.144    0.130    8.792    0.000    0.625    0.619
+    Q5_3              1.250    0.136    9.170    0.000    0.684    0.657
+    Q5_4              1.593    0.154   10.326    0.000    0.871    0.792
+    Q5_5              1.548    0.149   10.387    0.000    0.846    0.800
+    Q5_6              1.310    0.128   10.225    0.000    0.716    0.779
+    Q5_8              1.527    0.149   10.234    0.000    0.835    0.780
+    Q5_12             1.111    0.129    8.603    0.000    0.607    0.600
+  IN =~                                                                 
+    Q6_1              1.000                               0.587    0.686
+    Q6_2              1.218    0.095   12.824    0.000    0.714    0.786
+    Q6_3              1.258    0.097   13.010    0.000    0.738    0.799
+    Q6_4              1.236    0.098   12.674    0.000    0.725    0.776
+    Q6_5              0.855    0.112    7.663    0.000    0.501    0.456
+    Q6_6              1.050    0.082   12.784    0.000    0.616    0.784
+    Q6_7              1.226    0.092   13.345    0.000    0.719    0.822
+    Q6_8              1.164    0.087   13.314    0.000    0.683    0.820
+    Q6_11             1.029    0.100   10.258    0.000    0.603    0.619
+  EN =~                                                                 
+    Q7_2              1.000                               0.654    0.737
+    Q7_4              0.926    0.084   11.058    0.000    0.605    0.643
+    Q7_5              1.077    0.083   12.945    0.000    0.704    0.747
+    Q7_7              1.146    0.094   12.134    0.000    0.749    0.702
+    Q7_8              1.103    0.083   13.372    0.000    0.721    0.771
+    Q7_12             1.083    0.095   11.449    0.000    0.708    0.665
+    Q7_13             0.635    0.100    6.365    0.000    0.415    0.376
+    Q7_14             1.017    0.093   10.969    0.000    0.665    0.638
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  EL ~~                                                                 
+    SC                0.205    0.032    6.505    0.000    0.571    0.571
+    IN                0.267    0.034    7.767    0.000    0.691    0.691
+    EN                0.309    0.038    8.080    0.000    0.718    0.718
+  SC ~~                                                                 
+    IN                0.169    0.028    6.038    0.000    0.528    0.528
+    EN                0.275    0.038    7.180    0.000    0.771    0.771
+  IN ~~                                                                 
+    EN                0.257    0.035    7.422    0.000    0.671    0.671
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+    EL                0.434    0.054    8.040    0.000    1.000    1.000
+    SC                0.299    0.056    5.337    0.000    1.000    1.000
+    IN                0.344    0.051    6.741    0.000    1.000    1.000
+    EN                0.427    0.058    7.335    0.000    1.000    1.000
+   .Q4_1              0.290    0.025   11.525    0.000    0.290    0.400
+   .Q4_2              0.268    0.023   11.664    0.000    0.268    0.438
+   .Q4_3              0.263    0.023   11.375    0.000    0.263    0.366
+   .Q4_4              0.254    0.022   11.314    0.000    0.254    0.354
+   .Q4_5              0.332    0.028   11.665    0.000    0.332    0.438
+   .Q4_8              0.346    0.029   11.778    0.000    0.346    0.475
+   .Q4_9              0.490    0.041   11.912    0.000    0.490    0.527
+   .Q4_10             0.264    0.023   11.575    0.000    0.264    0.413
+   .Q4_11             0.391    0.034   11.645    0.000    0.391    0.432
+   .Q4_15             0.377    0.032   11.804    0.000    0.377    0.484
+   .Q4_16             0.479    0.040   11.975    0.000    0.479    0.555
+   .Q4_17             0.545    0.045   12.115    0.000    0.545    0.632
+   .Q4_18             0.206    0.018   11.189    0.000    0.206    0.331
+   .Q4_19             0.403    0.035   11.629    0.000    0.403    0.428
+   .Q5_1              0.604    0.051   11.879    0.000    0.604    0.669
+   .Q5_2              0.630    0.054   11.722    0.000    0.630    0.617
+   .Q5_3              0.614    0.053   11.547    0.000    0.614    0.568
+   .Q5_4              0.452    0.043   10.396    0.000    0.452    0.373
+   .Q5_5              0.403    0.039   10.275    0.000    0.403    0.360
+   .Q5_6              0.333    0.031   10.569    0.000    0.333    0.394
+   .Q5_8              0.449    0.043   10.555    0.000    0.449    0.392
+   .Q5_12             0.654    0.055   11.793    0.000    0.654    0.640
+   .Q6_1              0.387    0.033   11.660    0.000    0.387    0.529
+   .Q6_2              0.315    0.029   10.974    0.000    0.315    0.382
+   .Q6_3              0.308    0.028   10.838    0.000    0.308    0.362
+   .Q6_4              0.347    0.031   11.072    0.000    0.347    0.397
+   .Q6_5              0.955    0.078   12.246    0.000    0.955    0.792
+   .Q6_6              0.238    0.022   11.001    0.000    0.238    0.386
+   .Q6_7              0.249    0.024   10.541    0.000    0.249    0.325
+   .Q6_8              0.228    0.022   10.571    0.000    0.228    0.328
+   .Q6_11             0.587    0.049   11.913    0.000    0.587    0.617
+   .Q7_2              0.359    0.033   10.914    0.000    0.359    0.457
+   .Q7_4              0.520    0.045   11.561    0.000    0.520    0.587
+   .Q7_5              0.392    0.036   10.815    0.000    0.392    0.442
+   .Q7_7              0.576    0.051   11.202    0.000    0.576    0.507
+   .Q7_8              0.356    0.034   10.549    0.000    0.356    0.406
+   .Q7_12             0.633    0.055   11.446    0.000    0.633    0.558
+   .Q7_13             1.046    0.085   12.275    0.000    1.046    0.859
+   .Q7_14             0.644    0.056   11.586    0.000    0.644    0.593</code></pre>
+</div>
+<div id="dwls" class="section level3">
+<h3>DWLS</h3>
+<pre class="r"><code>fit1 &lt;- lavaan::cfa(mod1, data=mydata, ordered=T)</code></pre>
+<pre><code>Warning in lav_model_vcov(lavmodel = lavmodel, lavsamplestats = lavsamplestats, : lavaan WARNING:
+    The variance-covariance matrix of the estimated parameters (vcov)
+    does not appear to be positive definite! The smallest eigenvalue
+    (= -1.720588e-17) is smaller than zero. This may be a symptom that
+    the model is not identified.</code></pre>
+<pre class="r"><code>summary(fit1, standardized=T, fit.measures=T)</code></pre>
+<pre><code>lavaan 0.6-7 ended normally after 67 iterations
+
+  Estimator                                       DWLS
+  Optimization method                           NLMINB
+  Number of free parameters                        201
+                                                      
+  Number of observations                           312
+                                                      
+Model Test User Model:
+                                              Standard      Robust
+  Test Statistic                              2549.695    2222.269
+  Degrees of freedom                               696         696
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  1.437
+  Shift parameter                                          447.847
+       simple second-order correction                             
+
+Model Test Baseline Model:
+
+  Test statistic                            113152.945   17274.138
+  Degrees of freedom                               741         741
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  6.799
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.984       0.908
+  Tucker-Lewis Index (TLI)                       0.982       0.902
+                                                                  
+  Robust Comparative Fit Index (CFI)                            NA
+  Robust Tucker-Lewis Index (TLI)                               NA
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.093       0.084
+  90 Percent confidence interval - lower         0.089       0.080
+  90 Percent confidence interval - upper         0.096       0.088
+  P-value RMSEA &lt;= 0.05                          0.000       0.000
+                                                                  
+  Robust RMSEA                                                  NA
+  90 Percent confidence interval - lower                        NA
+  90 Percent confidence interval - upper                        NA
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.074       0.074
+
+Parameter Estimates:
+
+  Standard errors                           Robust.sem
+  Information                                 Expected
+  Information saturated (h1) model        Unstructured
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  EL =~                                                                 
+    Q4_1              1.000                               0.815    0.815
+    Q4_2              0.958    0.030   31.941    0.000    0.781    0.781
+    Q4_3              1.039    0.029   36.179    0.000    0.846    0.846
+    Q4_4              1.042    0.028   37.342    0.000    0.849    0.849
+    Q4_5              0.981    0.033   29.651    0.000    0.799    0.799
+    Q4_8              0.958    0.034   27.917    0.000    0.781    0.781
+    Q4_9              0.953    0.035   27.360    0.000    0.776    0.776
+    Q4_10             1.007    0.031   32.389    0.000    0.821    0.821
+    Q4_11             1.018    0.033   31.193    0.000    0.829    0.829
+    Q4_15             0.957    0.030   31.435    0.000    0.780    0.780
+    Q4_16             0.910    0.031   28.934    0.000    0.742    0.742
+    Q4_17             0.821    0.038   21.493    0.000    0.669    0.669
+    Q4_18             1.051    0.029   35.739    0.000    0.856    0.856
+    Q4_19             1.007    0.030   33.139    0.000    0.821    0.821
+  SC =~                                                                 
+    Q5_1              1.000                               0.783    0.783
+    Q5_2              0.860    0.046   18.535    0.000    0.673    0.673
+    Q5_3              0.926    0.052   17.815    0.000    0.725    0.725
+    Q5_4              1.046    0.046   22.706    0.000    0.819    0.819
+    Q5_5              1.077    0.045   23.921    0.000    0.843    0.843
+    Q5_6              1.027    0.049   21.132    0.000    0.804    0.804
+    Q5_8              0.995    0.051   19.418    0.000    0.779    0.779
+    Q5_12             1.017    0.051   19.765    0.000    0.796    0.796
+  IN =~                                                                 
+    Q6_1              1.000                               0.757    0.757
+    Q6_2              1.108    0.045   24.546    0.000    0.840    0.840
+    Q6_3              1.058    0.049   21.527    0.000    0.801    0.801
+    Q6_4              1.062    0.046   22.874    0.000    0.804    0.804
+    Q6_5              0.731    0.057   12.885    0.000    0.554    0.554
+    Q6_6              1.124    0.052   21.505    0.000    0.851    0.851
+    Q6_7              1.193    0.059   20.355    0.000    0.903    0.903
+    Q6_8              1.121    0.052   21.466    0.000    0.849    0.849
+    Q6_11             1.130    0.062   18.216    0.000    0.856    0.856
+  EN =~                                                                 
+    Q7_2              1.000                               0.831    0.831
+    Q7_4              0.843    0.038   22.316    0.000    0.701    0.701
+    Q7_5              0.948    0.038   25.129    0.000    0.788    0.788
+    Q7_7              0.837    0.043   19.240    0.000    0.695    0.695
+    Q7_8              0.959    0.040   24.249    0.000    0.797    0.797
+    Q7_12             0.844    0.044   19.218    0.000    0.702    0.702
+    Q7_13             0.484    0.054    8.890    0.000    0.403    0.403
+    Q7_14             0.803    0.046   17.628    0.000    0.668    0.668
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  EL ~~                                                                 
+    SC                0.385    0.031   12.441    0.000    0.603    0.603
+    IN                0.440    0.033   13.191    0.000    0.713    0.713
+    EN                0.491    0.028   17.588    0.000    0.725    0.725
+  SC ~~                                                                 
+    IN                0.356    0.033   10.644    0.000    0.600    0.600
+    EN                0.490    0.032   15.155    0.000    0.753    0.753
+  IN ~~                                                                 
+    EN                0.453    0.035   13.107    0.000    0.720    0.720
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .Q4_1              0.000                               0.000    0.000
+   .Q4_2              0.000                               0.000    0.000
+   .Q4_3              0.000                               0.000    0.000
+   .Q4_4              0.000                               0.000    0.000
+   .Q4_5              0.000                               0.000    0.000
+   .Q4_8              0.000                               0.000    0.000
+   .Q4_9              0.000                               0.000    0.000
+   .Q4_10             0.000                               0.000    0.000
+   .Q4_11             0.000                               0.000    0.000
+   .Q4_15             0.000                               0.000    0.000
+   .Q4_16             0.000                               0.000    0.000
+   .Q4_17             0.000                               0.000    0.000
+   .Q4_18             0.000                               0.000    0.000
+   .Q4_19             0.000                               0.000    0.000
+   .Q5_1              0.000                               0.000    0.000
+   .Q5_2              0.000                               0.000    0.000
+   .Q5_3              0.000                               0.000    0.000
+   .Q5_4              0.000                               0.000    0.000
+   .Q5_5              0.000                               0.000    0.000
+   .Q5_6              0.000                               0.000    0.000
+   .Q5_8              0.000                               0.000    0.000
+   .Q5_12             0.000                               0.000    0.000
+   .Q6_1              0.000                               0.000    0.000
+   .Q6_2              0.000                               0.000    0.000
+   .Q6_3              0.000                               0.000    0.000
+   .Q6_4              0.000                               0.000    0.000
+   .Q6_5              0.000                               0.000    0.000
+   .Q6_6              0.000                               0.000    0.000
+   .Q6_7              0.000                               0.000    0.000
+   .Q6_8              0.000                               0.000    0.000
+   .Q6_11             0.000                               0.000    0.000
+   .Q7_2              0.000                               0.000    0.000
+   .Q7_4              0.000                               0.000    0.000
+   .Q7_5              0.000                               0.000    0.000
+   .Q7_7              0.000                               0.000    0.000
+   .Q7_8              0.000                               0.000    0.000
+   .Q7_12             0.000                               0.000    0.000
+   .Q7_13             0.000                               0.000    0.000
+   .Q7_14             0.000                               0.000    0.000
+    EL                0.000                               0.000    0.000
+    SC                0.000                               0.000    0.000
+    IN                0.000                               0.000    0.000
+    EN                0.000                               0.000    0.000
+
+Thresholds:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+    Q4_1|t1          -1.062    0.088  -12.101    0.000   -1.062   -1.062
+    Q4_1|t2           0.153    0.071    2.147    0.032    0.153    0.153
+    Q4_1|t3           1.449    0.106   13.658    0.000    1.449    1.449
+    Q4_1|t4           2.232    0.193   11.570    0.000    2.232    2.232
+    Q4_2|t1          -0.993    0.085  -11.632    0.000   -0.993   -0.993
+    Q4_2|t2           0.521    0.075    6.972    0.000    0.521    0.521
+    Q4_2|t3           1.732    0.127   13.613    0.000    1.732    1.732
+    Q4_2|t4           2.232    0.193   11.570    0.000    2.232    2.232
+    Q4_3|t1          -1.198    0.093  -12.870    0.000   -1.198   -1.198
+    Q4_3|t2           0.040    0.071    0.565    0.572    0.040    0.040
+    Q4_3|t3           1.449    0.106   13.658    0.000    1.449    1.449
+    Q4_3|t4           2.006    0.157   12.746    0.000    2.006    2.006
+    Q4_4|t1          -1.150    0.091  -12.627    0.000   -1.150   -1.150
+    Q4_4|t2          -0.153    0.071   -2.147    0.032   -0.153   -0.153
+    Q4_4|t3           1.426    0.105   13.620    0.000    1.426    1.426
+    Q4_4|t4           2.144    0.178   12.067    0.000    2.144    2.144
+    Q4_5|t1          -0.930    0.083  -11.142    0.000   -0.930   -0.930
+    Q4_5|t2           0.448    0.074    6.082    0.000    0.448    0.448
+    Q4_5|t3           1.383    0.102   13.529    0.000    1.383    1.383
+    Q4_5|t4           2.232    0.193   11.570    0.000    2.232    2.232
+    Q4_8|t1          -0.812    0.080  -10.117    0.000   -0.812   -0.812
+    Q4_8|t2           0.457    0.074    6.194    0.000    0.457    0.457
+    Q4_8|t3           1.547    0.113   13.751    0.000    1.547    1.547
+    Q4_8|t4           2.341    0.215   10.896    0.000    2.341    2.341
+    Q4_9|t1          -0.955    0.084  -11.340    0.000   -0.955   -0.955
+    Q4_9|t2           0.235    0.072    3.275    0.001    0.235    0.235
+    Q4_9|t3           1.090    0.089   12.282    0.000    1.090    1.090
+    Q4_9|t4           2.070    0.166   12.448    0.000    2.070    2.070
+    Q4_10|t1         -1.198    0.093  -12.870    0.000   -1.198   -1.198
+    Q4_10|t2         -0.227    0.072   -3.163    0.002   -0.227   -0.227
+    Q4_10|t3          1.603    0.117   13.751    0.000    1.603    1.603
+    Q4_10|t4          2.232    0.193   11.570    0.000    2.232    2.232
+    Q4_11|t1         -1.007    0.086  -11.727    0.000   -1.007   -1.007
+    Q4_11|t2          0.032    0.071    0.452    0.651    0.032    0.032
+    Q4_11|t3          1.150    0.091   12.627    0.000    1.150    1.150
+    Q4_11|t4          2.006    0.157   12.746    0.000    2.006    2.006
+    Q4_15|t1         -0.905    0.083  -10.941    0.000   -0.905   -0.905
+    Q4_15|t2          0.302    0.072    4.176    0.000    0.302    0.302
+    Q4_15|t3          1.342    0.100   13.421    0.000    1.342    1.342
+    Q4_15|t4          2.489    0.251    9.915    0.000    2.489    2.489
+    Q4_16|t1         -0.823    0.081  -10.222    0.000   -0.823   -0.823
+    Q4_16|t2          0.170    0.071    2.373    0.018    0.170    0.170
+    Q4_16|t3          1.304    0.098   13.300    0.000    1.304    1.304
+    Q4_16|t4          2.341    0.215   10.896    0.000    2.341    2.341
+    Q4_17|t1         -0.539    0.075   -7.194    0.000   -0.539   -0.539
+    Q4_17|t2          0.521    0.075    6.972    0.000    0.521    0.521
+    Q4_17|t3          1.362    0.101   13.477    0.000    1.362    1.362
+    Q4_17|t4          2.726    0.330    8.259    0.000    2.726    2.726
+    Q4_18|t1         -1.105    0.089  -12.370    0.000   -1.105   -1.105
+    Q4_18|t2          0.413    0.073    5.635    0.000    0.413    0.413
+    Q4_18|t3          1.521    0.111   13.738    0.000    1.521    1.521
+    Q4_18|t4          2.489    0.251    9.915    0.000    2.489    2.489
+    Q4_19|t1         -0.967    0.085  -11.438    0.000   -0.967   -0.967
+    Q4_19|t2          0.000    0.071    0.000    1.000    0.000    0.000
+    Q4_19|t3          1.105    0.089   12.370    0.000    1.105    1.105
+    Q4_19|t4          2.006    0.157   12.746    0.000    2.006    2.006
+    Q5_1|t1          -1.076    0.088  -12.192    0.000   -1.076   -1.076
+    Q5_1|t2           0.008    0.071    0.113    0.910    0.008    0.008
+    Q5_1|t3           1.020    0.086   11.822    0.000    1.020    1.020
+    Q5_1|t4           2.144    0.178   12.067    0.000    2.144    2.144
+    Q5_2|t1          -1.323    0.099  -13.362    0.000   -1.323   -1.323
+    Q5_2|t2          -0.521    0.075   -6.972    0.000   -0.521   -0.521
+    Q5_2|t3           0.502    0.074    6.750    0.000    0.502    0.502
+    Q5_2|t4           1.697    0.124   13.669    0.000    1.697    1.697
+    Q5_3|t1          -1.020    0.086  -11.822    0.000   -1.020   -1.020
+    Q5_3|t2          -0.048    0.071   -0.678    0.498   -0.048   -0.048
+    Q5_3|t3           0.881    0.082   10.738    0.000    0.881    0.881
+    Q5_3|t4           1.769    0.131   13.539    0.000    1.769    1.769
+    Q5_4|t1          -1.404    0.103  -13.577    0.000   -1.404   -1.404
+    Q5_4|t2          -0.835    0.081  -10.326    0.000   -0.835   -0.835
+    Q5_4|t3          -0.310    0.072   -4.289    0.000   -0.310   -0.310
+    Q5_4|t4           1.182    0.092   12.791    0.000    1.182    1.182
+    Q5_5|t1          -1.521    0.111  -13.738    0.000   -1.521   -1.521
+    Q5_5|t2          -0.823    0.081  -10.222    0.000   -0.823   -0.823
+    Q5_5|t3          -0.302    0.072   -4.176    0.000   -0.302   -0.302
+    Q5_5|t4           1.267    0.096   13.166    0.000    1.267    1.267
+    Q5_6|t1          -1.449    0.106  -13.658    0.000   -1.449   -1.449
+    Q5_6|t2          -0.457    0.074   -6.194    0.000   -0.457   -0.457
+    Q5_6|t3           0.812    0.080   10.117    0.000    0.812    0.812
+    Q5_6|t4           1.769    0.131   13.539    0.000    1.769    1.769
+    Q5_8|t1          -1.120    0.090  -12.457    0.000   -1.120   -1.120
+    Q5_8|t2          -0.378    0.073   -5.187    0.000   -0.378   -0.378
+    Q5_8|t3           0.586    0.076    7.746    0.000    0.586    0.586
+    Q5_8|t4           1.664    0.121   13.709    0.000    1.664    1.664
+    Q5_12|t1         -1.120    0.090  -12.457    0.000   -1.120   -1.120
+    Q5_12|t2         -0.466    0.074   -6.305    0.000   -0.466   -0.466
+    Q5_12|t3          0.801    0.080   10.012    0.000    0.801    0.801
+    Q5_12|t4          1.697    0.124   13.669    0.000    1.697    1.697
+    Q6_1|t1           0.000    0.071    0.000    1.000    0.000    0.000
+    Q6_1|t2           1.198    0.093   12.870    0.000    1.198    1.198
+    Q6_1|t3           1.633    0.119   13.736    0.000    1.633    1.633
+    Q6_1|t4           2.232    0.193   11.570    0.000    2.232    2.232
+    Q6_2|t1          -0.605    0.076   -7.965    0.000   -0.605   -0.605
+    Q6_2|t2           0.790    0.080    9.907    0.000    0.790    0.790
+    Q6_2|t3           1.362    0.101   13.477    0.000    1.362    1.362
+    Q6_2|t4           2.144    0.178   12.067    0.000    2.144    2.144
+    Q6_3|t1          -0.484    0.074   -6.528    0.000   -0.484   -0.484
+    Q6_3|t2           0.801    0.080   10.012    0.000    0.801    0.801
+    Q6_3|t3           1.426    0.105   13.620    0.000    1.426    1.426
+    Q6_3|t4           2.070    0.166   12.448    0.000    2.070    2.070
+    Q6_4|t1          -0.625    0.076   -8.185    0.000   -0.625   -0.625
+    Q6_4|t2           0.596    0.076    7.856    0.000    0.596    0.596
+    Q6_4|t3           1.426    0.105   13.620    0.000    1.426    1.426
+    Q6_4|t4           2.006    0.157   12.746    0.000    2.006    2.006
+    Q6_5|t1          -0.779    0.079   -9.801    0.000   -0.779   -0.779
+    Q6_5|t2           0.293    0.072    4.064    0.000    0.293    0.293
+    Q6_5|t3           0.905    0.083   10.941    0.000    0.905    0.905
+    Q6_5|t4           1.732    0.127   13.613    0.000    1.732    1.732
+    Q6_6|t1          -0.353    0.073   -4.851    0.000   -0.353   -0.353
+    Q6_6|t2           1.120    0.090   12.457    0.000    1.120    1.120
+    Q6_6|t3           1.732    0.127   13.613    0.000    1.732    1.732
+    Q6_6|t4           2.489    0.251    9.915    0.000    2.489    2.489
+    Q6_7|t1          -0.674    0.077   -8.729    0.000   -0.674   -0.674
+    Q6_7|t2           0.558    0.075    7.415    0.000    0.558    0.558
+    Q6_7|t3           1.521    0.111   13.738    0.000    1.521    1.521
+    Q6_7|t4           2.341    0.215   10.896    0.000    2.341    2.341
+    Q6_8|t1          -0.846    0.081  -10.430    0.000   -0.846   -0.846
+    Q6_8|t2           0.577    0.076    7.636    0.000    0.577    0.577
+    Q6_8|t3           1.574    0.114   13.756    0.000    1.574    1.574
+    Q6_8|t4           2.232    0.193   11.570    0.000    2.232    2.232
+    Q6_11|t1         -1.047    0.087  -12.009    0.000   -1.047   -1.047
+    Q6_11|t2         -0.370    0.073   -5.075    0.000   -0.370   -0.370
+    Q6_11|t3          0.980    0.085   11.535    0.000    0.980    0.980
+    Q6_11|t4          1.898    0.144   13.171    0.000    1.898    1.898
+    Q7_2|t1          -1.076    0.088  -12.192    0.000   -1.076   -1.076
+    Q7_2|t2          -0.422    0.073   -5.747    0.000   -0.422   -0.422
+    Q7_2|t3           1.215    0.094   12.947    0.000    1.215    1.215
+    Q7_2|t4           2.232    0.193   11.570    0.000    2.232    2.232
+    Q7_4|t1          -1.267    0.096  -13.166    0.000   -1.267   -1.267
+    Q7_4|t2          -0.422    0.073   -5.747    0.000   -0.422   -0.422
+    Q7_4|t3           0.869    0.082   10.636    0.000    0.869    0.869
+    Q7_4|t4           1.851    0.139   13.323    0.000    1.851    1.851
+    Q7_5|t1          -1.182    0.092  -12.791    0.000   -1.182   -1.182
+    Q7_5|t2          -0.530    0.075   -7.083    0.000   -0.530   -0.530
+    Q7_5|t3           0.980    0.085   11.535    0.000    0.980    0.980
+    Q7_5|t4           1.769    0.131   13.539    0.000    1.769    1.769
+    Q7_7|t1          -1.547    0.113  -13.751    0.000   -1.547   -1.547
+    Q7_7|t2          -0.917    0.083  -11.041    0.000   -0.917   -0.917
+    Q7_7|t3          -0.422    0.073   -5.747    0.000   -0.422   -0.422
+    Q7_7|t4           1.062    0.088   12.101    0.000    1.062    1.062
+    Q7_8|t1          -1.285    0.097  -13.235    0.000   -1.285   -1.285
+    Q7_8|t2          -0.493    0.074   -6.639    0.000   -0.493   -0.493
+    Q7_8|t3           0.893    0.082   10.840    0.000    0.893    0.893
+    Q7_8|t4           1.769    0.131   13.539    0.000    1.769    1.769
+    Q7_12|t1         -1.449    0.106  -13.658    0.000   -1.449   -1.449
+    Q7_12|t2         -0.930    0.083  -11.142    0.000   -0.930   -0.930
+    Q7_12|t3         -0.016    0.071   -0.226    0.821   -0.016   -0.016
+    Q7_12|t4          1.150    0.091   12.627    0.000    1.150    1.150
+    Q7_13|t1         -1.574    0.114  -13.756    0.000   -1.574   -1.574
+    Q7_13|t2         -0.893    0.082  -10.840    0.000   -0.893   -0.893
+    Q7_13|t3         -0.137    0.071   -1.921    0.055   -0.137   -0.137
+    Q7_13|t4          0.905    0.083   10.941    0.000    0.905    0.905
+    Q7_14|t1         -1.633    0.119  -13.736    0.000   -1.633   -1.633
+    Q7_14|t2         -1.007    0.086  -11.727    0.000   -1.007   -1.007
+    Q7_14|t3         -0.277    0.072   -3.839    0.000   -0.277   -0.277
+    Q7_14|t4          0.993    0.085   11.632    0.000    0.993    0.993
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+    EL                0.664    0.034   19.547    0.000    1.000    1.000
+    SC                0.613    0.047   13.018    0.000    1.000    1.000
+    IN                0.574    0.051   11.165    0.000    1.000    1.000
+    EN                0.691    0.043   16.158    0.000    1.000    1.000
+   .Q4_1              0.336                               0.336    0.336
+   .Q4_2              0.391                               0.391    0.391
+   .Q4_3              0.284                               0.284    0.284
+   .Q4_4              0.280                               0.280    0.280
+   .Q4_5              0.362                               0.362    0.362
+   .Q4_8              0.390                               0.390    0.390
+   .Q4_9              0.398                               0.398    0.398
+   .Q4_10             0.327                               0.327    0.327
+   .Q4_11             0.313                               0.313    0.313
+   .Q4_15             0.392                               0.392    0.392
+   .Q4_16             0.450                               0.450    0.450
+   .Q4_17             0.553                               0.553    0.553
+   .Q4_18             0.267                               0.267    0.267
+   .Q4_19             0.326                               0.326    0.326
+   .Q5_1              0.387                               0.387    0.387
+   .Q5_2              0.547                               0.547    0.547
+   .Q5_3              0.475                               0.475    0.475
+   .Q5_4              0.330                               0.330    0.330
+   .Q5_5              0.289                               0.289    0.289
+   .Q5_6              0.354                               0.354    0.354
+   .Q5_8              0.393                               0.393    0.393
+   .Q5_12             0.366                               0.366    0.366
+   .Q6_1              0.426                               0.426    0.426
+   .Q6_2              0.295                               0.295    0.295
+   .Q6_3              0.358                               0.358    0.358
+   .Q6_4              0.353                               0.353    0.353
+   .Q6_5              0.693                               0.693    0.693
+   .Q6_6              0.275                               0.275    0.275
+   .Q6_7              0.184                               0.184    0.184
+   .Q6_8              0.279                               0.279    0.279
+   .Q6_11             0.267                               0.267    0.267
+   .Q7_2              0.309                               0.309    0.309
+   .Q7_4              0.509                               0.509    0.509
+   .Q7_5              0.380                               0.380    0.380
+   .Q7_7              0.516                               0.516    0.516
+   .Q7_8              0.365                               0.365    0.365
+   .Q7_12             0.508                               0.508    0.508
+   .Q7_13             0.838                               0.838    0.838
+   .Q7_14             0.554                               0.554    0.554
+
+Scales y*:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+    Q4_1              1.000                               1.000    1.000
+    Q4_2              1.000                               1.000    1.000
+    Q4_3              1.000                               1.000    1.000
+    Q4_4              1.000                               1.000    1.000
+    Q4_5              1.000                               1.000    1.000
+    Q4_8              1.000                               1.000    1.000
+    Q4_9              1.000                               1.000    1.000
+    Q4_10             1.000                               1.000    1.000
+    Q4_11             1.000                               1.000    1.000
+    Q4_15             1.000                               1.000    1.000
+    Q4_16             1.000                               1.000    1.000
+    Q4_17             1.000                               1.000    1.000
+    Q4_18             1.000                               1.000    1.000
+    Q4_19             1.000                               1.000    1.000
+    Q5_1              1.000                               1.000    1.000
+    Q5_2              1.000                               1.000    1.000
+    Q5_3              1.000                               1.000    1.000
+    Q5_4              1.000                               1.000    1.000
+    Q5_5              1.000                               1.000    1.000
+    Q5_6              1.000                               1.000    1.000
+    Q5_8              1.000                               1.000    1.000
+    Q5_12             1.000                               1.000    1.000
+    Q6_1              1.000                               1.000    1.000
+    Q6_2              1.000                               1.000    1.000
+    Q6_3              1.000                               1.000    1.000
+    Q6_4              1.000                               1.000    1.000
+    Q6_5              1.000                               1.000    1.000
+    Q6_6              1.000                               1.000    1.000
+    Q6_7              1.000                               1.000    1.000
+    Q6_8              1.000                               1.000    1.000
+    Q6_11             1.000                               1.000    1.000
+    Q7_2              1.000                               1.000    1.000
+    Q7_4              1.000                               1.000    1.000
+    Q7_5              1.000                               1.000    1.000
+    Q7_7              1.000                               1.000    1.000
+    Q7_8              1.000                               1.000    1.000
+    Q7_12             1.000                               1.000    1.000
+    Q7_13             1.000                               1.000    1.000
+    Q7_14             1.000                               1.000    1.000</code></pre>
+</div>
+<div id="miiv" class="section level3">
+<h3>MIIV</h3>
+<pre class="r"><code># get the model implied instrumental variables
+miivs(mod1)</code></pre>
+<pre><code>Warning in if (trySolve(BetaNA)) {: the condition has length &gt; 1 and only the
+first element will be used</code></pre>
+<pre><code>Model Equation Information 
+
+ LHS   RHS 
+ Q4_2  Q4_1
+ Q4_3  Q4_1
+ Q4_4  Q4_1
+ Q4_5  Q4_1
+ Q4_8  Q4_1
+ Q4_9  Q4_1
+ Q4_10 Q4_1
+ Q4_11 Q4_1
+ Q4_15 Q4_1
+ Q4_16 Q4_1
+ Q4_17 Q4_1
+ Q4_18 Q4_1
+ Q4_19 Q4_1
+ Q5_2  Q5_1
+ Q5_3  Q5_1
+ Q5_4  Q5_1
+ Q5_5  Q5_1
+ Q5_6  Q5_1
+ Q5_8  Q5_1
+ Q5_12 Q5_1
+ Q6_2  Q6_1
+ Q6_3  Q6_1
+ Q6_4  Q6_1
+ Q6_5  Q6_1
+ Q6_6  Q6_1
+ Q6_7  Q6_1
+ Q6_8  Q6_1
+ Q6_11 Q6_1
+ Q7_4  Q7_2
+ Q7_5  Q7_2
+ Q7_7  Q7_2
+ Q7_8  Q7_2
+ Q7_12 Q7_2
+ Q7_13 Q7_2
+ Q7_14 Q7_2
+ MIIVs                                                                                                                                                                                                                                   
+ Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_2, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_2, Q4_3, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_2, Q4_3, Q4_4, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_2, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_2, Q5_3, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_2, Q5_3, Q5_4, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_2, Q5_3, Q5_4, Q5_5, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_2, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_2, Q6_3, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_2, Q6_3, Q6_4, Q6_6, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_2, Q6_3, Q6_4, Q6_5, Q6_7, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_8, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_11, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q7_2, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14 
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_4, Q7_7, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_4, Q7_5, Q7_8, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_4, Q7_5, Q7_7, Q7_12, Q7_13, Q7_14
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_4, Q7_5, Q7_7, Q7_8, Q7_13, Q7_14 
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_14 
+ Q4_1, Q4_2, Q4_3, Q4_4, Q4_5, Q4_8, Q4_9, Q4_10, Q4_11, Q4_15, Q4_16, Q4_17, Q4_18, Q4_19, Q5_1, Q5_2, Q5_3, Q5_4, Q5_5, Q5_6, Q5_8, Q5_12, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q6_6, Q6_7, Q6_8, Q6_11, Q7_4, Q7_5, Q7_7, Q7_8, Q7_12, Q7_13 </code></pre>
+<pre class="r"><code>fit1 &lt;- MIIVsem::miive(mod1, data=mydata)</code></pre>
+<pre><code>Warning in if (trySolve(BetaNA)) {: the condition has length &gt; 1 and only the
+first element will be used</code></pre>
+<pre class="r"><code>summary(fit1)</code></pre>
+<pre><code>MIIVsem (0.5.5) results 
+
+Number of observations                                                    312
+Number of equations                                                        35
+Estimator                                                           MIIV-2SLS
+Standard Errors                                                      standard
+Missing                                                              listwise
+
+
+Parameter Estimates:
+
+
+STRUCTURAL COEFFICIENTS:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Sargan   df   P(Chi)
+  EL =~                                                                      
+    Q4_1              1.000                                                  
+    Q4_2              0.813    0.050   16.136    0.000   57.558   36    0.013
+    Q4_3              0.978    0.052   18.928    0.000   45.111   36    0.142
+    Q4_4              0.950    0.054   17.449    0.000   52.226   36    0.039
+    Q4_5              0.812    0.064   12.705    0.000   89.531   36    0.000
+    Q4_8              0.754    0.064   11.764    0.000   89.092   36    0.000
+    Q4_9              0.770    0.072   10.678    0.000  126.594   36    0.000
+    Q4_10             0.795    0.053   15.081    0.000   69.268   36    0.001
+    Q4_11             0.906    0.065   13.909    0.000   97.157   36    0.000
+    Q4_15             0.781    0.063   12.397    0.000   96.437   36    0.000
+    Q4_16             0.836    0.067   12.512    0.000   78.464   36    0.000
+    Q4_17             0.674    0.069    9.729    0.000   93.603   36    0.000
+    Q4_18             0.845    0.053   16.028    0.000   69.339   36    0.001
+    Q4_19             0.891    0.068   13.201    0.000  118.605   36    0.000
+  EN =~                                                                      
+    Q7_2              1.000                                                  
+    Q7_4              0.808    0.067   12.136    0.000   65.024   36    0.002
+    Q7_5              0.933    0.066   14.066    0.000   55.791   36    0.019
+    Q7_7              0.853    0.078   10.922    0.000   99.736   36    0.000
+    Q7_8              0.883    0.065   13.532    0.000   86.489   36    0.000
+    Q7_12             0.838    0.082   10.239    0.000  112.196   36    0.000
+    Q7_13             0.411    0.088    4.692    0.000  108.095   36    0.000
+    Q7_14             0.761    0.080    9.459    0.000  102.168   36    0.000
+  IN =~                                                                      
+    Q6_1              1.000                                                  
+    Q6_2              1.004    0.063   16.000    0.000   81.381   36    0.000
+    Q6_3              0.949    0.065   14.557    0.000   79.387   36    0.000
+    Q6_4              0.975    0.069   14.101    0.000   82.202   36    0.000
+    Q6_5              0.615    0.089    6.914    0.000   64.094   36    0.003
+    Q6_6              0.682    0.059   11.518    0.000  123.462   36    0.000
+    Q6_7              0.851    0.066   12.807    0.000  118.819   36    0.000
+    Q6_8              0.817    0.063   12.891    0.000  100.842   36    0.000
+    Q6_11             0.608    0.080    7.559    0.000  132.969   36    0.000
+  SC =~                                                                      
+    Q5_1              1.000                                                  
+    Q5_2              0.836    0.078   10.755    0.000   74.900   36    0.000
+    Q5_3              0.951    0.083   11.438    0.000   50.812   36    0.052
+    Q5_4              0.803    0.089    9.041    0.000  155.872   36    0.000
+    Q5_5              0.829    0.088    9.452    0.000  136.462   36    0.000
+    Q5_6              0.772    0.076   10.183    0.000   93.538   36    0.000
+    Q5_8              0.808    0.086    9.428    0.000  124.326   36    0.000
+    Q5_12             0.794    0.084    9.500    0.000   81.247   36    0.000
+
+INTERCEPTS:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   
+    Q4_1              0.000                              
+    Q4_10             0.033    0.049    0.684    0.494   
+    Q4_11             0.038    0.061    0.627    0.531   
+    Q4_15            -0.222    0.059   -3.777    0.000   
+    Q4_16            -0.149    0.062   -2.392    0.017   
+    Q4_17            -0.487    0.065   -7.535    0.000   
+    Q4_18            -0.202    0.049   -4.098    0.000   
+    Q4_19             0.042    0.063    0.665    0.506   
+    Q4_2             -0.302    0.047   -6.463    0.000   
+    Q4_3              0.070    0.048    1.456    0.145   
+    Q4_4              0.117    0.051    2.301    0.021   
+    Q4_5             -0.251    0.060   -4.208    0.000   
+    Q4_8             -0.348    0.060   -5.827    0.000   
+    Q4_9             -0.130    0.067   -1.927    0.054   
+    Q5_1              0.000                              
+    Q5_12             0.181    0.070    2.601    0.009   
+    Q5_2              0.355    0.063    5.628    0.000   
+    Q5_3              0.044    0.069    0.634    0.526   
+    Q5_4              0.839    0.074   11.358    0.000   
+    Q5_5              0.845    0.073   11.571    0.000   
+    Q5_6              0.216    0.063    3.414    0.001   
+    Q5_8              0.226    0.071    3.175    0.001   
+    Q6_1              0.000                              
+    Q6_11             0.492    0.119    4.125    0.000   
+    Q6_2              0.371    0.092    4.017    0.000   
+    Q6_3              0.246    0.096    2.556    0.011   
+    Q6_4              0.396    0.103    3.864    0.000   
+    Q6_5              0.203    0.132    1.540    0.124   
+    Q6_6             -0.282    0.088   -3.212    0.001   
+    Q6_7              0.236    0.099    2.390    0.017   
+    Q6_8              0.233    0.094    2.477    0.013   
+    Q7_12             0.677    0.064   10.526    0.000   
+    Q7_13             0.639    0.069    9.266    0.000   
+    Q7_14             0.829    0.063   13.114    0.000   
+    Q7_2              0.000                              
+    Q7_4              0.070    0.052    1.346    0.178   
+    Q7_5              0.114    0.052    2.193    0.028   
+    Q7_7              0.868    0.061   14.165    0.000   
+    Q7_8              0.125    0.051    2.457    0.014   </code></pre>
+</div>
+<div id="miiv-categorical" class="section level3">
+<h3>MIIV Categorical</h3>
+<pre class="r"><code>fit1 &lt;- MIIVsem::miive(
+  mod1, data=mydata,
+  ordered=c(
+    paste0(&quot;Q4_&quot;,c(1:5,8:11, 15:19)),
+    paste0(&quot;Q5_&quot;,c(1:6, 8, 12)),
+    paste0(&quot;Q6_&quot;,c(1:8, 11)),
+    paste0(&quot;Q7_&quot;,c(2, 4:5, 7:8, 12:14))
+  )
+)</code></pre>
+<pre><code>Warning in if (trySolve(BetaNA)) {: the condition has length &gt; 1 and only the
+first element will be used</code></pre>
+<pre><code>Warning in lav_model_vcov(lavmodel = lavmodel, lavsamplestats = lavsamplestats, : lavaan WARNING:
+    The variance-covariance matrix of the estimated parameters (vcov)
+    does not appear to be positive definite! The smallest eigenvalue
+    (= -2.521472e-16) is smaller than zero. This may be a symptom that
+    the model is not identified.</code></pre>
+<pre class="r"><code>summary(fit1)</code></pre>
+<pre><code>MIIVsem (0.5.5) results 
+
+Number of observations                                                    312
+Number of equations                                                        35
+Estimator                                                     MIIV-2SLS (PIV)
+Standard Errors                                                      standard
+Missing                                                              listwise
+
+
+Parameter Estimates:
+
+
+STRUCTURAL COEFFICIENTS:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Sargan   df   P(Chi)
+  EL =~                                                                      
+    Q4_1              1.000                                                  
+    Q4_2              0.872    0.034   26.013    0.000                       
+    Q4_3              0.957    0.031   30.734    0.000                       
+    Q4_4              0.919    0.039   23.338    0.000                       
+    Q4_5              0.767    0.045   16.961    0.000                       
+    Q4_8              0.728    0.046   15.666    0.000                       
+    Q4_9              0.653    0.051   12.794    0.000                       
+    Q4_10             0.824    0.036   22.656    0.000                       
+    Q4_11             0.787    0.042   18.937    0.000                       
+    Q4_15             0.731    0.041   17.718    0.000                       
+    Q4_16             0.776    0.043   18.051    0.000                       
+    Q4_17             0.626    0.051   12.294    0.000                       
+    Q4_18             0.896    0.041   21.975    0.000                       
+    Q4_19             0.748    0.042   17.885    0.000                       
+  EN =~                                                                      
+    Q7_2              1.000                                                  
+    Q7_4              0.674    0.050   13.359    0.000                       
+    Q7_5              0.809    0.047   17.046    0.000                       
+    Q7_7              0.642    0.056   11.396    0.000                       
+    Q7_8              0.746    0.048   15.671    0.000                       
+    Q7_12             0.644    0.060   10.708    0.000                       
+    Q7_13             0.298    0.067    4.469    0.000                       
+    Q7_14             0.571    0.060    9.481    0.000                       
+  IN =~                                                                      
+    Q6_1              1.000                                                  
+    Q6_2              0.834    0.047   17.890    0.000                       
+    Q6_3              0.762    0.048   15.791    0.000                       
+    Q6_4              0.777    0.045   17.420    0.000                       
+    Q6_5              0.442    0.053    8.271    0.000                       
+    Q6_6              0.661    0.051   12.916    0.000                       
+    Q6_7              0.737    0.051   14.534    0.000                       
+    Q6_8              0.741    0.049   14.991    0.000                       
+    Q6_11             0.473    0.060    7.843    0.000                       
+  SC =~                                                                      
+    Q5_1              1.000                                                  
+    Q5_2              0.782    0.067   11.646    0.000                       
+    Q5_3              0.846    0.060   13.996    0.000                       
+    Q5_4              0.667    0.069    9.651    0.000                       
+    Q5_5              0.728    0.074    9.899    0.000                       
+    Q5_6              0.739    0.062   11.990    0.000                       
+    Q5_8              0.684    0.065   10.478    0.000                       
+    Q5_12             0.679    0.069    9.802    0.000                       </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18363)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] xtable_1.8-4      kableExtra_1.1.0  readxl_1.3.1      nFactors_2.4.1   
+ [5] lattice_0.20-41   psych_2.0.7       psychometric_2.2  multilevel_2.6   
+ [9] MASS_7.3-51.6     nlme_3.1-148      mvtnorm_1.1-1     ggcorrplot_0.1.3 
+[13] naniar_0.6.0      simsem_0.5-15     MIIVsem_0.5.5     lavaanPlot_0.5.1 
+[17] semTools_0.5-3    lavaan_0.6-7      data.table_1.13.0 patchwork_1.0.1  
+[21] forcats_0.5.0     stringr_1.4.0     dplyr_1.0.1       purrr_0.3.4      
+[25] readr_1.3.1       tidyr_1.1.1       tibble_3.0.3      ggplot2_3.3.2    
+[29] tidyverse_1.3.0   workflowr_1.6.2  
+
+loaded via a namespace (and not attached):
+ [1] fs_1.5.0           lubridate_1.7.9    webshot_0.5.2      RColorBrewer_1.1-2
+ [5] httr_1.4.2         rprojroot_1.3-2    tools_4.0.2        backports_1.1.7   
+ [9] R6_2.4.1           DBI_1.1.0          colorspace_1.4-1   withr_2.2.0       
+[13] tidyselect_1.1.0   mnormt_2.0.2       emmeans_1.4.8      compiler_4.0.2    
+[17] git2r_0.27.1       cli_2.0.2          rvest_0.3.6        xml2_1.3.2        
+[21] sandwich_2.5-1     scales_1.1.1       digest_0.6.25      pbivnorm_0.6.0    
+[25] rmarkdown_2.5      pkgconfig_2.0.3    htmltools_0.5.0    dbplyr_1.4.4      
+[29] htmlwidgets_1.5.1  rlang_0.4.7        rstudioapi_0.11    visNetwork_2.0.9  
+[33] generics_0.0.2     zoo_1.8-8          jsonlite_1.7.0     magrittr_1.5      
+[37] Matrix_1.2-18      Rcpp_1.0.5         munsell_0.5.0      fansi_0.4.1       
+[41] visdat_0.5.3       lifecycle_0.2.0    stringi_1.4.6      multcomp_1.4-13   
+[45] yaml_2.2.1         grid_4.0.2         blob_1.2.1         parallel_4.0.2    
+[49] promises_1.1.1     crayon_1.3.4       haven_2.3.1        splines_4.0.2     
+[53] hms_0.5.3          tmvnsim_1.0-2      knitr_1.29         pillar_1.4.6      
+[57] estimability_1.3   codetools_0.2-16   stats4_4.0.2       reprex_0.3.0      
+[61] glue_1.4.1         evaluate_0.14      modelr_0.1.8       vctrs_0.3.2       
+[65] httpuv_1.5.4       cellranger_1.1.0   gtable_0.3.0       assertthat_0.2.1  
+[69] xfun_0.19          broom_0.7.0        coda_0.19-3        later_1.1.0.1     
+[73] viridisLite_0.3.0  survival_3.2-3     DiagrammeR_1.0.6.1 TH.data_1.0-10    
+[77] ellipsis_0.3.1    </code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

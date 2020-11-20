@@ -1,0 +1,262 @@
+---
+title: "Sample Size Determination"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE, warning=F, error=F, message=F}
+
+# load packages
+source("code/load_packages.R")
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  out.width = "100%",
+  out.height = "400px"
+)
+
+options(digits=3)
+
+# ggplot theme setup
+theme_set(theme_classic())
+
+# set seed
+set.seed(20201014)
+
+```
+
+# POOLS Model
+
+The POOLS model is generally a four factor model with 10-14 items per factor.
+
+# Power Analysis Simulation Study
+
+Here, we vary the sample size between 100 and 1000 (steps of 50) to determine the approximate minimal sample size needed to reject that the data fails to fit the model.
+
+## Populaiton Model
+
+```{r sim, eval=T}
+
+pop_model <- "
+  # POOLS Items (~40)
+  EF =~ .6*p11 + .6*p12 + .6*p13 + .6*p14 + .6*p15 + .6*p16 + .6*p17 + .6*p18 + .6*p19 + .6*p110
+  ST =~ .6*p21 + .6*p22 + .6*p23 + .6*p24 + .6*p25 + .6*p26 + .6*p27 + .6*p28 + .6*p29 + .6*p210
+  IN =~ .6*p31 + .6*p32 + .6*p33 + .6*p34 + .6*p35 + .6*p36 + .6*p37 + .6*p38 + .6*p39 + .6*p310
+  EN =~ .6*p41 + .6*p42 + .6*p43 + .6*p44 + .6*p45 + .6*p46 + .6*p47 + .6*p48 + .6*p49 + .6*p410
+  
+  # Self-Efficacy Items (12)
+  #   omegas: .85, .82, .8
+  se1 =~ .75*eff1 + .75*eff2 + .75*eff3 +.75*eff4
+  se2 =~ .75*eff5 + .75*eff6 + .7*eff7 +.7*eff8
+  se3 =~ .7*eff9 + .7*eff10 + .7*eff11 +.7*eff12
+  
+  # Teacher-Team Inno Scale (omega = .89)
+  tt =~ .8*ttis1 + .8*ttis2 + .8*ttis3 + .8*ttis4 
+  
+  # NEO FFM
+  # Alphas: .77, .81, .82, .86, .86
+  A =~ .7*ffmA1 + .7*ffmA2 + .7*ffmA3 + .7*ffmA4 + .7*ffmA5 + .7*ffmA6 + .7*ffmA7 + .7*ffmA8 + .7*ffmA9 + .7*ffmA10
+  C =~ .7*ffmC1 + .7*ffmC2 + .7*ffmC3 + .7*ffmC4 + .7*ffmC5 + .7*ffmC6 + .7*ffmC7 + .7*ffmC8 + .7*ffmC9 + .7*ffmC10
+  O =~ .7*ffmO1 + .7*ffmO2 + .7*ffmO3 + .7*ffmO4 + .7*ffmO5 + .7*ffmO6 + .7*ffmO7 + .7*ffmO8 + .7*ffmO9 + .7*ffmO10
+  E =~ .7*ffmE1 + .7*ffmE2 + .7*ffmE3 + .7*ffmE4 + .7*ffmE5 + .7*ffmE6 + .7*ffmE7 + .7*ffmE8 + .7*ffmE9 + .7*ffmE10
+  N =~ .7*ffmN1 + .7*ffmN2 + .7*ffmN3 + .7*ffmN4 + .7*ffmN5 + .7*ffmN6 + .7*ffmN7 + .7*ffmN8 + .7*ffmN9 + .7*ffmN10
+  
+  # Latent Variable Covariance Matrix
+  #   POOLS
+  EF ~~ 1*EF + .3*ST + .2*In + .2*EN
+  ST ~~ 1*ST + .1*IN + .3*EN
+  IN ~~ 1*IN + .3*EN
+  EN ~~ 1*EN
+  #   SE
+  se1 ~~ 1*se1 + .5*se2 + .4*se3
+  se2 ~~ 1*se2 + .3*se3
+  se3 ~~ 1*se3
+  # FFM (taken from deyoung table 6)
+  A ~~ 1*A + (0.38)*C + (0.11)*O + (0.15)*E + (-0.24)*N
+  C ~~ 1*C + (0.11)*O + (0.18)*E + (-0.24)*N
+  O ~~ 1*O + (0.26)*E + (-0.13)*N
+  E ~~ 1*E + (-0.33)*N
+  N ~~ 1*N
+  
+  # Research questions
+  # 1. FFM accounting for variance of POOLS
+  # (need to come up with better values)
+  EF ~ .1*A + .3*C + .4*O + .1*E + (-0.2)*N
+  ST ~ .1*A + .3*C + .4*O + .1*E + (-0.2)*N
+  EN ~ .1*A + .3*C + .4*O + .1*E + (-0.2)*N
+  IN ~ .1*A + .3*C + .4*O + .1*E + (-0.2)*N
+  
+  # 2. relationship between SE & Pools
+  EF ~ .3*se1 + .2*se2 + .4*se3
+  ST ~ .3*se1 + .2*se2 + .4*se3
+  IN ~ .3*se1 + .2*se2 + .4*se3
+  EN ~ .3*se1 + .2*se2 + .4*se3
+  
+  # 3. Team inno predicting POOLS
+  EF ~ .2*tt
+  ST ~ .2*tt
+  IN ~ .2*tt
+  EN ~ .2*tt
+  
+  # 4. demographics
+  EF ~ 0.1*sex
+  ST ~ 0.1*sex
+  IN ~ 0.1*sex
+  EN ~ 0.1*sex
+  
+  # categorical variables
+  sex | 0.4*t1
+  
+"
+dat <- simulateData(pop_model, model.type = "sem")
+
+#Impose missing
+datmiss <- imposeMissing(
+  dat,
+  nforms = 7,
+  itemGroups = list(c(1:107),
+                    c(),
+                    c(41:56),
+                    c(                     77:86, 87:96, 97:106),
+                    c(       57:66,               87:96, 97:106),
+                    c(       57:66, 67:76,               97:106),
+                    c(       57:66, 67:76, 77:86               ),
+                    c(              67:76, 77:86, 87:96        )
+                    ))
+
+
+
+naniar::vis_miss(datmiss)
+
+```
+
+
+
+
+## Estimation Model 
+
+```{r sim-est, eval=F}
+est_model <- '
+  # 1. Latent variable definition
+  # POOLS
+  EF =~ 1*p11 + p12 + p13 + p14 + p15# + p16 + p17 + p18 + p19 + p110
+  ST =~ 1*p21 + p22 + p23 + p24 + p25# + p26 + p27 + p28 + p29 + p210
+  IN =~ 1*p31 + p32 + p33 + p34 + p35# + p36 + p37 + p38 + p39 + p310
+  EN =~ 1*p41 + p42 + p43 + p44 + p45# + p46 + p47 + p48 + p49 + p410
+  
+  # Self-Efficacy Items
+  se1 =~ NA*eff1 + eff2 + eff3 + eff4
+  se2 =~ NA*eff5 + eff6 + eff7 + eff8
+  se3 =~ NA*eff9 + eff10 + eff11 + eff12
+  
+  # Teacher-Team Inno Scale
+  tt =~ NA*ttis1 + ttis2 + ttis3 + ttis4 
+  
+  # NEO FFM
+  A =~ NA*ffmA1 + ffmA2 + ffmA3 + ffmA4 + ffmA5 + ffmA6 + ffmA7 + ffmA8 + ffmA9 + ffmA10
+  C =~ NA*ffmC1 + ffmC2 + ffmC3 + ffmC4 + ffmC5 + ffmC6 + ffmC7 + ffmC8 + ffmC9 + ffmC10
+  O =~ NA*ffmO1 + ffmO2 + ffmO3 + ffmO4 + ffmO5 + ffmO6 + ffmO7 + ffmO8 + ffmO9 + ffmO10
+  E =~ NA*ffmE1 + ffmE2 + ffmE3 + ffmE4 + ffmE5 + ffmE6 + ffmE7 + ffmE8 + ffmE9 + ffmE10
+  N =~ NA*ffmN1 + ffmN2 + ffmN3 + ffmN4 + ffmN5 + ffmN6 + ffmN7 + ffmN8 + ffmN9 + ffmN10
+  
+  
+  # 2. Latent variable covariances
+  #   POOLS
+    EF ~~ EF + ST + IN + EN
+    ST ~~ ST + IN + EN
+    IN ~~ IN + EN
+  #   SE
+    se1 ~~ 1*se1 + se2 + se3
+    se2 ~~ 1*se2 + se3
+    se3 ~~ 1*se3
+  #   Team Inno.
+    tt ~~ 1*tt
+  #   FFM
+    A ~~ 1*A + C + O + E + N
+    C ~~ 1*C + O + E + N
+    O ~~ 1*O + E + N
+    E ~~ 1*E + N
+    N ~~ 1*N
+  
+  # Research questions
+  # 1. FFM accounting for variance of POOLS
+  EF ~ A + C + O + E + N
+  ST ~ A + C + O + E + N
+  IN ~ A + C + O + E + N
+  EN ~ A + C + O + E + N
+  
+  # 2. relationship between SE & Pools
+  EF ~ se1 + se2 + se3
+  ST ~ se1 + se2 + se3
+  IN ~ se1 + se2 + se3
+  EN ~ se1 + se2 + se3
+  
+  # 3. Team inno predicting POOLS
+  EF ~ tt
+  ST ~ tt
+  IN ~ tt
+  EN ~ tt
+
+'
+
+# use missing = "ML" for FIML
+fit <- cfa(est_model, datmiss, estimator = "ML", missing = "ML")
+summary(fit, standardized=T, fit.measures=T)
+
+# ================================== #
+# funciton:
+#   data_function_categorization()
+#
+# Purpose:
+#   categorize the continuous response 
+# into the 5 discrete categories we
+# will observe in the analysis.
+# We plan to treat the data as continuous.
+# But, we will also use a robust estimation
+# method DWLS and 
+# PML (pairwise maximum likelihood)
+data_function_categorization <- function(data){
+  tauCreate <- function(x){
+    e <- rnorm(4,0, 0.01)
+    BREAKS <- c(-Inf, -1.4+e[1], -0.4+e[2], 0.2+e[3], 1+e[4], Inf)
+    
+    x <- cut(x,
+             breaks=BREAKS,
+             labels = c(-2, -1, 0, 1, 2))
+    as.numeric(x)-3 # center at 0
+  }
+  data[,1:106] <- apply(data[,1:106], 2, tauCreate)
+  data
+}
+
+
+missdata_mech <- miss(
+  nforms = 7,
+  itemGroups = list(c(1:107),
+                    c(),
+                    c(41:56),
+                    c(                     77:86, 87:96, 97:106),
+                    c(       57:66,               87:96, 97:106),
+                    c(       57:66, 67:76,               97:106),
+                    c(       57:66, 67:76, 77:86               ),
+                    c(              67:76, 77:86, 87:96        ))
+)
+
+
+
+sim_res <- sim(
+  nRep = 5, n = 500,
+  lavaanfun = "sem",
+  model = list(model=est_model, estimator = "ML", missing = "ML"),
+  generate = pop_model,
+  miss = missdata_mech,
+  datafun = data_function_categorization
+)
+
+```
+
+

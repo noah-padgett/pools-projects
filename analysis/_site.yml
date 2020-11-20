@@ -1,7 +1,7 @@
 name: "pools-projects"
 output_dir: ../docs
 navbar:
-  title: "pools-projects"
+  title: "POOLS"
   left:
   - text: Home
     href: index.html

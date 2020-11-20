@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Sample Size Determination</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">POOLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Sample Size Determination</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-10-21
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>pools-projects/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20201007code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20201007)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20201007code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20201007)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong76332d3"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 76332d3 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrong76332d3" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version 76332d3. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  IRB/
+    Untracked:  analysis/pools-definitions.Rmd
+    Untracked:  analysis/power_calculation.Rmd
+    Untracked:  code/load_packages.R
+    Untracked:  code/r_functions.R
+    Untracked:  item-review-1/
+    Untracked:  papers/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+    Modified:   analysis/index.Rmd
+    Modified:   pools-projects.Rproj
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="pools-model" class="section level1">
+<h1>POOLS Model</h1>
+<p>The POOLS model is generally a four factor model with 10-14 items per factor.</p>
+<pre class="r"><code># First model is just of the Pools items (parsed down to 10 items per subscale)
+pools1 &lt;- &#39;
+  # 1. Latent variable definition
+  EF =~ i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8 + i9 + i10
+  ST =~ i11 + i12 + i13 + i14 + i15 + i16 + i17 + i18 + i19 + i20
+  IN =~ i21 + i22 + i23 + i24 + i25 + i26 + i27 + i28 + i29 + i30
+  EN =~ i31 + i32 + i33 + i34 + i35 + i36 + i37 + i38 + i39 + i40
+  
+  # 2. Latent variable covariances
+  EF ~~ ST + IN + EN
+  ST ~~ IN + EN
+  IN ~~ EN
+  
+  # 3. Thresholds (5-pt scale)
+  i1 | t1 + t2 + t3 + t4
+  i2 | t1 + t2 + t3 + t4
+  i3 | t1 + t2 + t3 + t4
+  i4 | t1 + t2 + t3 + t4
+  i5 | t1 + t2 + t3 + t4
+  i6 | t1 + t2 + t3 + t4
+  i7 | t1 + t2 + t3 + t4
+  i8 | t1 + t2 + t3 + t4
+  i9 | t1 + t2 + t3 + t4
+  i10 | t1 + t2 + t3 + t4
+  i11 | t1 + t2 + t3 + t4
+  i12 | t1 + t2 + t3 + t4
+  i13 | t1 + t2 + t3 + t4
+  i14 | t1 + t2 + t3 + t4
+  i15 | t1 + t2 + t3 + t4
+  i16 | t1 + t2 + t3 + t4
+  i17 | t1 + t2 + t3 + t4
+  i18 | t1 + t2 + t3 + t4
+  i19 | t1 + t2 + t3 + t4
+  i20 | t1 + t2 + t3 + t4
+  i21 | t1 + t2 + t3 + t4
+  i22 | t1 + t2 + t3 + t4
+  i23 | t1 + t2 + t3 + t4
+  i24 | t1 + t2 + t3 + t4
+  i25 | t1 + t2 + t3 + t4
+  i26 | t1 + t2 + t3 + t4
+  i27 | t1 + t2 + t3 + t4
+  i28 | t1 + t2 + t3 + t4
+  i29 | t1 + t2 + t3 + t4
+  i30 | t1 + t2 + t3 + t4
+  i31 | t1 + t2 + t3 + t4
+  i32 | t1 + t2 + t3 + t4
+  i33 | t1 + t2 + t3 + t4
+  i34 | t1 + t2 + t3 + t4
+  i35 | t1 + t2 + t3 + t4
+  i36 | t1 + t2 + t3 + t4
+  i37 | t1 + t2 + t3 + t4
+  i38 | t1 + t2 + t3 + t4
+  i39 | t1 + t2 + t3 + t4
+  i40 | t1 + t2 + t3 + t4
+&#39;
+
+# now simulate values of the parameters
+# 1. factor loadings
+Lambda &lt;- matrix(ncol=4, nrow=40)
+  # on factor looadings
+  Lambda[1:10, 1] &lt;- rnorm(10, .6, 0.1)
+  Lambda[11:20, 2] &lt;- rnorm(10, .6, 0.1)
+  Lambda[21:30, 3] &lt;- rnorm(10, .6, 0.1)
+  Lambda[31:40, 4] &lt;- rnorm(10, .6, 0.1)
+  # off factor loadings
+  Lambda[11:40, 1] &lt;- rnorm(30, 0.1, 0.05)
+  Lambda[c(1:10, 21:40), 2] &lt;- rnorm(30, 0.1, 0.05)
+  Lambda[c(1:20, 31:40), 3] &lt;- rnorm(30, 0.1, 0.05)
+  Lambda[1:30, 4] &lt;- rnorm(30, 0.1, 0.05)
+
+# 2. factor covariances
+Psi &lt;- matrix(ncol=4, nrow=4)
+  # factor variances with NA for correlations
+  x &lt;- c(1, NA, 1, NA, NA, 1, NA, NA, NA, 1)
+  # correlations
+  x[is.na(x)] &lt;- rnorm(6, 0.3, 0.1)
+  Psi &lt;- lav_matrix_lower2full(x, diagonal = T)
+
+# 3. Thresholds
+tau &lt;- c(-Inf, -1.4, -0.4, 0.2, 1, Inf)
+tauCreate &lt;- function(x){
+  x &lt;- cut(x,
+           breaks=c(-Inf, -1.4, -0.4, 0.2, 1, Inf),
+           labels = c(-2, -1, 0, 1, 2))
+  as.numeric(x)-3 # center at 0
+}
+
+# 4. Error covariance matrix
+Theta &lt;- matrix(0, ncol=40, nrow=40)
+diag(Theta) &lt;- runif(40, 0.2, 0.6)
+
+# generate random sample
+N &lt;- 500
+eta &lt;- rmvnorm(N, mean = c(0,0,0,0), sigma = Psi)
+e &lt;- rmvnorm(N, mean = rep(0, 40), sigma = Theta)
+
+ys &lt;- t(Lambda%*%t(eta)) + e
+y &lt;- apply(ys, 2, tauCreate)
+
+colnames(y) &lt;- paste0(&quot;i&quot;,1:40)
+y &lt;- as.data.frame(y)
+
+loadpop &lt;- loadmis &lt;- matrix(0, ncol=4, nrow=40)
+  loadpop[1:10, 1]  &lt;- &quot;rnorm(1, .6, 0.1)&quot;
+  loadpop[11:20, 2] &lt;- &quot;rnorm(1, .6, 0.1)&quot;
+  loadpop[21:30, 3] &lt;- &quot;rnorm(1, .6, 0.1)&quot;
+  loadpop[31:40, 4] &lt;- &quot;rnorm(1, .6, 0.1)&quot;
+  # off factor loadings
+  loadmis[11:40, 1] &lt;- &quot;rnorm(1, 0.1, 0.05)&quot;
+  loadmis[c(1:10, 21:40), 2] &lt;- &quot;rnorm(1, 0.1, 0.05)&quot;
+  loadmis[c(1:20, 31:40), 3] &lt;- &quot;rnorm(1, 0.1, 0.05)&quot;
+  loadmis[1:30, 4] &lt;- &quot;rnorm(1, 0.1, 0.05)&quot;
+loadfree &lt;-  matrix(0, ncol=4, nrow=40)
+  loadfree[1:10,  1] &lt;- NA
+  loadfree[11:20, 2] &lt;- NA
+  loadfree[21:30, 3] &lt;- NA
+  loadfree[31:40, 4] &lt;- NA
+LOADINGS &lt;- bind(free=loadfree, popParam = loadpop, misspec = loadmis)
+
+# psi - factor covariance matrix
+latentcorfree &lt;- matrix(NA, 4, 4)
+diag(latentcorfree) &lt;- 1
+latentcorpop  &lt;- matrix(NA, 4, 4)
+  # factor variances with NA for correlations
+  latentcorpop[lower.tri(latentcorpop)] &lt;- NA
+  # correlations
+  latentcorpop[lower.tri(latentcorpop)] &lt;- round(rnorm(length(latentcorpop[lower.tri(latentcorpop, diag=F)==T]),0.3, 0.1), 3)
+  latentcorpop &lt;- lav_matrix_lower2full(c(latentcorpop[lower.tri(latentcorpop)]), diagonal = F)
+  diag(latentcorpop) &lt;- 0
+FACTORCOV &lt;- bind(free=latentcorfree, popParam = latentcorpop)
+
+# theta - residual covariance matrix
+ercorfree &lt;- matrix(0, 40, 40)
+diag(ercorfree) &lt;- NA
+ercormis &lt;- matrix(0, 40, 40)
+  ercormis[lower.tri(ercormis)] &lt;- NA
+  ercormis[lower.tri(ercormis)] &lt;- runif(length(ercormis[lower.tri(ercormis, diag = F)==T]), -0.05, 0.05)
+  ercormis &lt;- lav_matrix_lower2full(c(ercormis[lower.tri(ercormis)]), diagonal = F)
+  diag(ercormis) &lt;- 0
+ERRORCOV &lt;- binds(ercorfree,1,ercormis)
+
+
+CFA.Model &lt;- model(LY = LOADINGS, RPS = FACTORCOV, RTE = ERRORCOV, modelType=&quot;CFA&quot;)
+dat &lt;- generate(CFA.Model, 100)
+out &lt;- analyze(CFA.Model, dat)
+
+Output &lt;- sim(NULL, CFA.Model, n=seq(100, 200, 20), pmMCAR=c(0, 0.1, 0.2))
+summary(Output)
+
+
+Cpow2 &lt;- continuousPower(Output, contN = TRUE,
+                         contMCAR = TRUE,
+                         pred=list(N = 200, pmMCAR = 0.3))
+Cpow2
+
+pools2 &lt;- &#39;
+
+  # 1. Latent variable definition
+  EF =~ i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8 + i9 + i10
+  ST =~ i11 + i12 + i13 + i14 + i15 + i16 + i17 + i18 + i19 + i20
+  IN =~ i21 + i22 + i23 + i24 + i25 + i26 + i27 + i28 + i29 + i30
+  EN =~ i31 + i32 + i33 + i34 + i35 + i36 + i37 + i38 + i39 + i40
+  
+  # 2. Latent variable covariances
+  EF ~~ ST + IN + EN
+  ST ~~ IN + EN
+  IN ~~ EN
+&#39;
+
+# use missing = &quot;ML&quot; for FIML
+fit &lt;- cfa(pools2, y, estimator = &quot;ML&quot;, missing = &quot;ML&quot;)
+summary(fit, standardized=T)
+
+
+lavaanPlot::lavaanPlot(model = fit)</code></pre>
+<div id="simulation-study" class="section level2">
+<h2>Simulation Study</h2>
+<p>Here, we vary the sample size between 100 and 1000 (steps of 50) to determine the approximate minimal sample size needed to reject that the data fails to fit the model.</p>
+<pre class="r"><code>pop_model &lt;- &quot;
+  # POOLS Items (~40)
+  EF =~ .6*p11 + .6*p12 + .6*p13 + .6*p14 + .6*p15 + .6*p16 + .6*p17 + .6*p18 + .6*p19 + .6*p110
+  ST =~ .6*p21 + .6*p22 + .6*p23 + .6*p24 + .6*p25 + .6*p26 + .6*p27 + .6*p28 + .6*p29 + .6*p210
+  IN =~ .6*p31 + .6*p32 + .6*p33 + .6*p34 + .6*p35 + .6*p36 + .6*p37 + .6*p38 + .6*p39 + .6*p310
+  EN =~ .6*p41 + .6*p42 + .6*p43 + .6*p44 + .6*p45 + .6*p46 + .6*p47 + .6*p48 + .6*p49 + .6*p410
+  
+  # Self-Efficacy Items (12)
+  #   omegas: .85, .82, .8
+  se1 =~ .75*eff1 + .75*eff2 + .75*eff3 +.75*eff4
+  se2 =~ .75*eff5 + .75*eff6 + .7*eff7 +.7*eff8
+  se3 =~ .7*eff9 + .7*eff10 + .7*eff11 +.7*eff12
+  
+  # Teacher-Team Inno Scale (omega = .89)
+  tt =~ .8*ttis1 + .8*ttis2 + .8*ttis3 + .8*ttis4 
+  
+  # NEO FFM
+  # Alphas: .77, .81, .82, .86, .86
+  A =~ .7*ffmA1 + .7*ffmA2 + .7*ffmA3 + .7*ffmA4 + .7*ffmA5 + .7*ffmA6 + .7*ffmA7 + .7*ffmA8 + .7*ffmA9 + .7*ffmA10
+  C =~ .7*ffmC1 + .7*ffmC2 + .7*ffmC3 + .7*ffmC4 + .7*ffmC5 + .7*ffmC6 + .7*ffmC7 + .7*ffmC8 + .7*ffmC9 + .7*ffmC10
+  O =~ .7*ffmO1 + .7*ffmO2 + .7*ffmO3 + .7*ffmO4 + .7*ffmO5 + .7*ffmO6 + .7*ffmO7 + .7*ffmO8 + .7*ffmO9 + .7*ffmO10
+  E =~ .7*ffmE1 + .7*ffmE2 + .7*ffmE3 + .7*ffmE4 + .7*ffmE5 + .7*ffmE6 + .7*ffmE7 + .7*ffmE8 + .7*ffmE9 + .7*ffmE10
+  N =~ .7*ffmN1 + .7*ffmN2 + .7*ffmN3 + .7*ffmN4 + .7*ffmN5 + .7*ffmN6 + .7*ffmN7 + .7*ffmN8 + .7*ffmN9 + .7*ffmN10
+  
+  # Latent Variable Covariance Matrix
+  #   POOLS
+  EF ~~ 1*EF + .3*ST + .2*In + .2*EN
+  ST ~~ 1*ST + .1*IN + .3*EN
+  IN ~~ 1*IN + .3*EN
+  EN ~~ 1*EN
+  #   SE
+  se1 ~~ 1*se1 + .5*se2 + .4*se3
+  se2 ~~ 1*se2 + .3*se3
+  se3 ~~ 1*se3
+  # FFM (taken from deyoung table 6)
+  A ~~ 1*A + (0.38)*C + (0.11)*O + (0.15)*E + (-0.24)*N
+  C ~~ 1*C + (0.11)*O + (0.18)*E + (-0.24)*N
+  O ~~ 1*O + (0.26)*E + (-0.13)*N
+  E ~~ 1*E + (-0.33)*N
+  N ~~ 1*N
+  
+  # Research questions
+  # 1. FFM accounting for variance of POOLS
+  # (need to come up with better values)
+  EF ~ .1*A + .3*C + .4*O + .1*E + (-0.2)*N
+  ST ~ .1*A + .3*C + .4*O + .1*E + (-0.2)*N
+  EN ~ .1*A + .3*C + .4*O + .1*E + (-0.2)*N
+  IN ~ .1*A + .3*C + .4*O + .1*E + (-0.2)*N
+  
+  # 2. relationship between SE &amp; Pools
+  EF ~ .3*se1 + .2*se2 + .4*se3
+  ST ~ .3*se1 + .2*se2 + .4*se3
+  IN ~ .3*se1 + .2*se2 + .4*se3
+  EN ~ .3*se1 + .2*se2 + .4*se3
+  
+  # 3. Team inno predicting POOLS
+  EF ~ .2*tt
+  ST ~ .2*tt
+  IN ~ .2*tt
+  EN ~ .2*tt
+  
+  # 4. demographics
+  EF ~ 0.1*sex
+  ST ~ 0.1*sex
+  IN ~ 0.1*sex
+  EN ~ 0.1*sex
+  
+  # categorical variables
+  sex | 0.4*t1
+  
+&quot;
+dat &lt;- simulateData(pop_model, model.type = &quot;sem&quot;)
+
+
+
+
+
+#Impose missing
+datmiss &lt;- imposeMissing(
+  dat,
+  nforms = 6,
+  itemGroups = list(c(1:107),
+                    c(41:56),
+                    c(                     77:86, 87:96, 97:106),
+                    c(       57:66,               87:96, 97:106),
+                    c(       57:66, 67:76,               97:106),
+                    c(       57:66, 67:76, 77:86               ),
+                    c(              67:76, 77:86, 87:96        )
+                    ))
+
+
+vis_miss(datmiss)
+
+
+est_model &lt;- &#39;
+  # 1. Latent variable definition
+  # POOLS
+  EF =~ 1*p11 + p12 + p13 + p14 + p15 + p16 + p17 + p18 + p19 + p110
+  ST =~ 1*p21 + p22 + p23 + p24 + p25 + p26 + p27 + p28 + p29 + p210
+  IN =~ 1*p31 + p32 + p33 + p34 + p35 + p36 + p37 + p38 + p39 + p310
+  EN =~ 1*p41 + p42 + p43 + p44 + p45 + p46 + p47 + p48 + p49 + p410
+  
+  # Self-Efficacy Items
+  se1 =~ NA*eff1 + eff2 + eff3 + eff4
+  se2 =~ NA*eff5 + eff6 + eff7 + eff8
+  se3 =~ NA*eff9 + eff10 + eff11 + eff12
+  
+  # Teacher-Team Inno Scale
+  tt =~ NA*ttis1 + ttis2 + ttis3 + ttis4 
+  
+  # NEO FFM
+  A =~ NA*ffmA1 + ffmA2 + ffmA3 + ffmA4 + ffmA5 + ffmA6 + ffmA7 + ffmA8 + ffmA9 + ffmA10
+  C =~ NA*ffmC1 + ffmC2 + ffmC3 + ffmC4 + ffmC5 + ffmC6 + ffmC7 + ffmC8 + ffmC9 + ffmC10
+  O =~ NA*ffmO1 + ffmO2 + ffmO3 + ffmO4 + ffmO5 + ffmO6 + ffmO7 + ffmO8 + ffmO9 + ffmO10
+  E =~ NA*ffmE1 + ffmE2 + ffmE3 + ffmE4 + ffmE5 + ffmE6 + ffmE7 + ffmE8 + ffmE9 + ffmE10
+  N =~ NA*ffmN1 + ffmN2 + ffmN3 + ffmN4 + ffmN5 + ffmN6 + ffmN7 + ffmN8 + ffmN9 + ffmN10
+  
+  
+  # 2. Latent variable covariances
+  #   POOLS
+    EF ~~ EF + ST + IN + EN
+    ST ~~ ST + IN + EN
+    IN ~~ IN + EN
+  #   SE
+    se1 ~~ 1*se1 + se2 + se3
+    se2 ~~ 1*se2 + se3
+    se3 ~~ 1*se3
+  #   Team Inno.
+    tt ~~ 1*tt
+  #   FFM
+    A ~~ 1*A + C + O + E + N
+    C ~~ 1*C + O + E + N
+    O ~~ 1*O + E + N
+    E ~~ 1*E + N
+    N ~~ 1*N
+  
+  # Research questions
+  # 1. FFM accounting for variance of POOLS
+  EF ~ A + C + O + E + N
+  ST ~ A + C + O + E + N
+  IN ~ A + C + O + E + N
+  EN ~ A + C + O + E + N
+  
+  # 2. relationship between SE &amp; Pools
+  EF ~ se1 + se2 + se3
+  ST ~ se1 + se2 + se3
+  IN ~ se1 + se2 + se3
+  EN ~ se1 + se2 + se3
+  
+  # 3. Team inno predicting POOLS
+  EF ~ tt
+  ST ~ tt
+  IN ~ tt
+  EN ~ tt
+
+&#39;
+
+# use missing = &quot;ML&quot; for FIML
+fit &lt;- cfa(est_model, datmiss, estimator = &quot;ML&quot;, missing = &quot;ML&quot;)
+summary(fit, standardized=T, fit.measures=T)
+
+
+
+data_function_categorization &lt;- function(data){
+  tauCreate &lt;- function(x){
+    e &lt;- rnorm(4,0, 0.01)
+    BREAKS &lt;- c(-Inf, -1.4+e[1], -0.4+e[2], 0.2+e[3], 1+e[4], Inf)
+    
+    x &lt;- cut(x,
+             breaks=BREAKS,
+             labels = c(-2, -1, 0, 1, 2))
+    as.numeric(x)-3 # center at 0
+  }
+  data[,1:106] &lt;- apply(data[,1:106], 2, tauCreate)
+  data
+}
+
+
+missdata_mech &lt;- miss(
+  nforms = 6,
+  itemGroups = list(c(1:107),
+                    c(41:56),
+                    c(                     77:86, 87:96, 97:106),
+                    c(       57:66,               87:96, 97:106),
+                    c(       57:66, 67:76,               97:106),
+                    c(       57:66, 67:76, 77:86               ),
+                    c(              67:76, 77:86, 87:96        ))
+)
+
+sim_res &lt;- sim(
+  nRep = 5, n = 500,
+  lavaanfun = &quot;sem&quot;,
+  model = list(model=est_model, estimator = &quot;ML&quot;, missing = &quot;ML&quot;),
+  generate = pop_model,
+  miss = missdata_mech,
+  datafun = data_function_categorization
+)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18362)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] xtable_1.8-4      kableExtra_1.1.0  mvtnorm_1.1-1     naniar_0.6.0     
+ [5] simsem_0.5-15     lavaanPlot_0.5.1  semTools_0.5-3    lavaan_0.6-7     
+ [9] data.table_1.13.0 patchwork_1.0.1   forcats_0.5.0     stringr_1.4.0    
+[13] dplyr_1.0.1       purrr_0.3.4       readr_1.3.1       tidyr_1.1.1      
+[17] tibble_3.0.3      ggplot2_3.3.2     tidyverse_1.3.0   workflowr_1.6.2  
+
+loaded via a namespace (and not attached):
+ [1] fs_1.5.0           lubridate_1.7.9    webshot_0.5.2      RColorBrewer_1.1-2
+ [5] httr_1.4.2         rprojroot_1.3-2    tools_4.0.2        backports_1.1.7   
+ [9] R6_2.4.1           DBI_1.1.0          colorspace_1.4-1   withr_2.2.0       
+[13] tidyselect_1.1.0   mnormt_2.0.1       emmeans_1.4.8      compiler_4.0.2    
+[17] git2r_0.27.1       cli_2.0.2          rvest_0.3.6        xml2_1.3.2        
+[21] sandwich_2.5-1     scales_1.1.1       digest_0.6.25      pbivnorm_0.6.0    
+[25] rmarkdown_2.3      pkgconfig_2.0.3    htmltools_0.5.0    dbplyr_1.4.4      
+[29] htmlwidgets_1.5.1  rlang_0.4.7        readxl_1.3.1       rstudioapi_0.11   
+[33] visNetwork_2.0.9   generics_0.0.2     zoo_1.8-8          jsonlite_1.7.0    
+[37] magrittr_1.5       Matrix_1.2-18      Rcpp_1.0.5         munsell_0.5.0     
+[41] fansi_0.4.1        visdat_0.5.3       lifecycle_0.2.0    stringi_1.4.6     
+[45] multcomp_1.4-13    yaml_2.2.1         MASS_7.3-51.6      grid_4.0.2        
+[49] blob_1.2.1         promises_1.1.1     crayon_1.3.4       lattice_0.20-41   
+[53] haven_2.3.1        splines_4.0.2      hms_0.5.3          tmvnsim_1.0-2     
+[57] knitr_1.29         pillar_1.4.6       estimability_1.3   codetools_0.2-16  
+[61] stats4_4.0.2       reprex_0.3.0       glue_1.4.1         evaluate_0.14     
+[65] modelr_0.1.8       vctrs_0.3.2        httpuv_1.5.4       cellranger_1.1.0  
+[69] gtable_0.3.0       assertthat_0.2.1   xfun_0.16          broom_0.7.0       
+[73] coda_0.19-3        later_1.1.0.1      viridisLite_0.3.0  survival_3.2-3    
+[77] DiagrammeR_1.0.6.1 TH.data_1.0-10     ellipsis_0.3.1    </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

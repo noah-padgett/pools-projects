@@ -1,0 +1,150 @@
+---
+title: "Pilot Study Power Calculation"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE, warning=F, error=F, message=F}
+
+# load packages
+source("code/load_packages.R")
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  out.width = "100%",
+  out.height = "400px"
+)
+
+options(digits=3,max.print = 10000, scipen = 100)
+
+# ggplot theme setup
+theme_set(theme_classic())
+
+# set seed
+set.seed(20201014)
+
+```
+
+# POOLS Model
+
+The POOLS model is generally a four factor model with 10-14 items per factor.
+
+# Power Analysis Simulation Study
+
+Here, we vary the sample size between 100 and 1000 (steps of 50) to determine the approximate minimal sample size needed to reject that the data fails to fit the model.
+
+## Populaiton Model
+
+```{r sim, eval=T}
+
+pop_model <- "
+  # POOLS Items (~40)
+  EF =~ .6*p11 + .6*p12 + .6*p13 + .6*p14 + .6*p15 + .6*p16 + .6*p17 + .6*p18 + .6*p19 + .6*p110 + .6*p111 + .6*p112 + .6*p113 + .6*p114 + .6*p115 + .6*p116 + .6*p117 + .6*p118 + .6*p119
+  ST =~ .6*p21 + .6*p22 + .6*p23 + .6*p24 + .6*p25 + .6*p26 + .6*p27 + .6*p28 + .6*p29 + .6*p210 + .6*p211 + .6*p212
+  IN =~ .6*p31 + .6*p32 + .6*p33 + .6*p34 + .6*p35 + .6*p36 + .6*p37 + .6*p38 + .6*p39 + .6*p310 + .6*p311
+  EN =~ .6*p41 + .6*p42 + .6*p43 + .6*p44 + .6*p45 + .6*p46 + .6*p47 + .6*p48 + .6*p49 + .6*p410 + .6*p411 + .6*p412 + .6*p413 + .6*p414 + .6*p415
+  
+  # Latent Variable Covariance Matrix
+  #   POOLS
+  EF ~~ 1*EF + .3*ST + .2*In + .2*EN
+  ST ~~ 1*ST + .1*IN + .3*EN
+  IN ~~ 1*IN + .3*EN
+  EN ~~ 1*EN
+  
+"
+dat <- simulateData(pop_model, model.type = "sem")
+
+#Impose missing
+datmiss <- imposeMissing(
+  dat, pmMCAR=0.10, nforms = 7,
+  itemGroups = list(c(1:58),c(), c(), c(),
+                    c(1:19),c(20:31),
+                    c(32:43), c(44:58)))
+
+
+naniar::vis_miss(datmiss)
+
+```
+
+
+
+
+## Estimation Model 
+NOT RUN
+```{r sim-est, eval=F}
+
+est_model <- '
+  # 1. Latent variable definition
+  #   POOLS
+  EF =~ NA*p11 + p12 + p13 + p14 + p15 + p16 + p17 + p18 + p19 + p110 + p111 + p112 + p113 + p114 + p115 + p116 + p117 + p118 + p119
+  ST =~ NA*p21 + p22 + p23 + p24 + p25 + p26 + p27 + p28 + p29 + p210 + p211 + p212
+  IN =~ NA*p31 + p32 + p33 + p34 + p35 + p36 + p37 + p38 + p39 + p310 + p311
+  EN =~ NA*p41 + p42 + p43 + p44 + p45 + p46 + p47 + p48 + p49 + p410 + p411 + p412 + p413 + p414 + p415
+
+  # 2. Latent variable covariances
+  #   POOLS
+  EF ~~ 1*EF + ST + IN + EN
+  ST ~~ 1*ST + IN + EN
+  IN ~~ 1*IN + EN
+  EN ~~ 1*EN
+
+'
+
+# use missing = "ML" for FIML
+fit <- cfa(est_model, datmiss, estimator = "ML", missing = "ML")
+summary(fit, standardized=T, fit.measures=T)
+
+# ================================== #
+# funciton:
+#   data_function_categorization()
+#
+# Purpose:
+#   categorize the continuous response 
+# into the 5 discrete categories we
+# will observe in the analysis.
+# We plan to treat the data as continuous.
+# But, we will also use a robust estimation
+# method DWLS and 
+# PML (pairwise maximum likelihood)
+data_function_categorization <- function(data){
+  tauCreate <- function(x){
+    e <- rnorm(4,0, 0.01)
+    BREAKS <- c(-Inf, -1.4+e[1], -0.4+e[2], 0.2+e[3], 1+e[4], Inf)
+    
+    x <- cut(x,
+             breaks=BREAKS,
+             labels = c(-2, -1, 0, 1, 2))
+    as.numeric(x)-3 # center at 0
+  }
+  data[,1:58] <- apply(data[,1:58], 2, tauCreate)
+  data
+}
+
+
+missdata_mech <- miss(
+  pmMCAR=0.10, nforms = 7,
+  itemGroups = list(c(1:58),c(), c(), c(),
+                    c(1:19),c(20:31),
+                    c(32:43), c(44:58))
+)
+
+Nvec <- seq(100, 500, 50)
+Repvec <- rep(50, length(Nvec))
+sim_res <- sim(
+  nRep = NULL, n = rep(Nvec,5),
+  lavaanfun = "sem",
+  model = list(model=est_model, estimator = "ML", missing = "ML"),
+  generate = pop_model,
+  miss = missdata_mech,
+  datafun = data_function_categorization
+)
+summary(sim_res)
+plotPower(sim_res, "EF=~p11")
+
+```
+
+

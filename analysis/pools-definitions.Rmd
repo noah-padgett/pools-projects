@@ -1,0 +1,138 @@
+---
+title: "Perceptions of Online Learning Scales (POOLS)"
+subtitle: "Construct Definition"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+---
+
+# Literature Review 
+
+## Effective learning
+
+
+Learning is an activity that involves both mental processes and behavior or action (Ormrod, 2016; Watkins et al., 2002). Therefore, any measure of effective learning must take into account both the acquisition of new knowledge and its use or application. Defining efficacy can be challenging because learning occurs in such a wide variety of contexts and domains and is studied by researchers with differences in theory  (de Freitas, 2018; Ormrod, 2016). Nevertheless, cross-domain characteristics emerge concerning both the process and the outcomes of effective learning (de Freitas, 2018; Harden & Laidlaw, 2013; McTighe & O’Connor, n.d.; Ormrod, 2016; Watkins et al., 2002) and can be summarized by the following points.
+
+* Effective Learning Process
+    +	Timely, instructive feedback from the instructor
+    + Assessment of various kinds at regular intervals
+    + Participation of the student in her own assessment and goal-orientation
+* Effective Learning Outcomes
+    + New knowledge, perspectives, values, and/or attitudes
+    + Relevant and applied skills
+
+
+
+de Freitas, S. (2018). Are games effective learning tools? A review of educational games. Educational Technology & Society, 21(2), 74–84.
+
+Harden, R. M., & Laidlaw, J. M. (2013). Be FAIR to students: Four principles that lead to more effective learning. Medical Teacher, 35(1), 27–31. https://doi.org/10.3109/0142159X.2012.732717
+
+McTighe, J., & O’Connor, K. (n.d.). Seven practices for effective learning -. Educational Leadership, 63(3), 10–17.
+
+Ormrod, J. E. (2016). Human learning (7th ed.). Pearson.
+
+Watkins, C., Lodge, C., Whalley, C., Wagner, P., & Carnell, E. (2002). Effective Learning. In Institute of Education, University of London: London. (2002). Institute of Education, University of London. https://discovery.ucl.ac.uk/id/eprint/10002819/
+
+
+## Student-Centeredness
+
+The student-centered approach could be dated back to Dewey’s belief that teacher instruction should be driven by students’ interests as they were unique learners (Schiro, 2012). 
+Student-centered approach is characterized with high levels of student direction – student-based activities, interactions, and assessments. 
+Students work collaboratively to achieve the learning goals based on students’ interests with teachers’ facilitation (Pedersen & Liu, 2003). 
+Student-centered approach could be utilized across learning modes. 
+Empirical evidence supports that student-centered approach enhances student learning motivations.
+
+
+## Engagement
+
+The extent a student is actively involved in a learning activity (Reeve, 2012). There are four interrelated aspects of students’ engagement during learning activities:
+
+*	Behavioral Engagement
+    +	On-task attention and concentration
+    +	High effort
+    +	High task persistence
+*	Emotional Engagement
+    +	Presence of task-facilitating emotions (interest, curiosity, enthusiasm)
+    +	Absence of task-withdrawing emotions (distress, anger, frustration, anxiety, fear)
+*	Cognitive Engagement
+    +	Use of sophisticated, deep, and personalized learning strategies (e.g. elaboration)
+    +	Seeking conceptual understanding rather than surface knowledge
+    +	Use of self-regulator strategies (e.g. planning)
+* Agentic Engagement (more recent definitions spread this across the other three)
+    +	Proactive, intentional, and constructive contribution into the flow of the learning activity (e.g. offering input, making suggestions, asking questions)
+    +	Enriching the learning activity rather than passively receiving it as a given
+
+"The energy and effort that students employ within their learning community, observable via any number of behavioral, cognitive, or affective indicators across a continuum. It is shaped by a range of structural and internal influences including learning activities and the learning environment. The more students are engaged and empowered within their learning community, the more likely they are to channel that energy back into their learning, leading to a range of short and long term outcomes that can likewise further fuel engagement" (Bond et al., 2020, p. 
+3).
+
+### Indicators of Student Engagement (Bond & Bedenlier, 2019)
+
+| Cognitive Engagement | Affective Engagement	| Behavioral Engagement |
+|----------------------|----------------------|-----------------------|
+| Purposeful	 | Enthusiasm	 | Effort | 
+| Integrating ideas | 	Sense of belonging | 	Attention/focus | 
+| Critical thinking	 | Satisfaction	 | Developing agency | 
+| Setting learning goals | 	Curiosity | 	Attendance | 
+| Self-regulation	 | Sees relevance	 | Attempting | 
+| Operational reasoning | 	Interest	 | Homework completion | 
+| Trying to understand | 	Sense of wellbeing	 | Positive conduct | 
+| Reflection | 	Vitality/zest	 | Action/initiation | 
+| Focus/concentration	 | Feeling appreciated | 	Confidence | 
+| Deep learning	 | Manages expectations	 | Participation/involvement | 
+| Learning from peers | 	Enjoyment	 | Asking teacher or peers for help | 
+| Justifying decisions | 	Pride	 | Assuming responsibility | 
+| Understanding	 | Excitement | 	Identifying opportunities/challenges | 
+| Doing extra to learn more	 | Desire to do well | 	Developing multidisciplinary skills | 
+| Follow through/care/thoroughness | 	Positive interactions with peers and teachers | 	Supporting and encouraging peers | 
+| Positive self-perceptions and self-efficacy	 | Sense of connectedness to school/university/classroom	 | Interaction with peers, teacher, content, technology | 
+| Preference for challenging tasks | Positive attitude about learning/values learning | 	Study habits/accessing course material | 
+| Teaching self and peers	|  | 	Time on task/staying on task/persistence | 
+| Use of sophisticated learning strategies	|   |  | 	
+| Positive perceptions of teacher support		|   |  | 
+
+
+Bond, M., \& Bedenlier, S. (2019). Facilitating student engagement through educational technology: Towards a conceptual framework. Journal of Interactive Media in Education, 1(11), 1-14. https://doi.org/10.5334/jime.528 
+
+Bond, M., Buntins, K., Bedenlier, S., Zawacki-Richter, O., \& Kerres, M. (2020). Mapping research in student engagement and educational technology in higher education: A systematic evidence map. International Journal of Educational Technology in Higher Education, 17(1), 1-30. https://doi.org/10.1186/s41239-01900176-8 
+
+Reeve, J. (2012). A self-determination theory perspective on student engagement. In S. Christenson, A., Reschly, \& C. Wylie (Eds.), Handbook of research on student engagement. Springer. https://doi.org/10.1007/978-1-4614-2018-7_7
+
+
+## Interactive Learning 
+
+Interactive learning is conceived of in a three-part interactive scheme: 
+
+(a) learner – instructor interaction, 
+(b) learner – learner interaction, and 
+(c) learner – content interaction (Moore, 1989; Su et al., 2005). 
+
+Interaction is a reciprocal event that requires two elements that are mutually influencing one another (Wagner, 1994). 
+
+Moore, M. G. (1989). Editorial: Three types of interaction. The American Journal of Distance Education, 3(2), 1-6.
+
+Su, B., Bonk, C. J., Magjuka, R. J., Liu, X., & Lee, S. (2005). The importance of interaction in web-based education: A program-level case study of online MBA courses. Journal of Interactive Online Learning, 4(1), 1-19. 
+
+Wagner, E. D. (1994). In support of functional definition of interaction. The American Journal of Distance Education, 8(2), 6-26. 
+
+# Proposed Construct Definitions
+
+## Effective Learning
+
+Effective learning is defined as learning in which students masterfully acquire and utilize relevant new knowledge and/or skills, as witnessed through application and assessment that occur within or outside the immediate classroom.
+
+
+## Engagement
+
+Engagement includes the energy and effort that students present in their learning environment. Engagement can be observed in three areas: cognitive engagement, behavioral engagement, and affective engagement. Engagement can be influenced internal factors as well as environmental factors. Engagement theory posits that higher levels of engagement support more efficient learning, retention, and transfer. 
+
+## Student Centeredness
+
+Student-centered approach is characterized with high levels of student direction – student-based activities, interactions, and assessments. 
+
+## Interactive Learning
+
+Interactive learning involves three facets of interaction: (a) student to instructor, (b) student to student, and (c) student to content. These interactions contribute to effective learning singularly as well as in combination. All three facets of interaction can be present regardless of the learning mode (online or on-the-ground). 
+
