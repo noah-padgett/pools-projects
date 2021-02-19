@@ -23,10 +23,10 @@ rm(list=ls())
 packages <- c("tidyverse", "readr", "patchwork",
               "tidyr","data.table", "dplyr","ggplot2",
               "lavaan", "semTools", "lavaanPlot",
-              "MIIVsem",
+              "MIIVsem", "lslx",
               "simsem", "naniar", "ggcorrplot",
               "mvtnorm", "psychometric", "psych",
-              "nFactors",
+              "nFactors", "coda",
               "readxl",
               "kableExtra", "xtable")   
 new.packages <- packages[!(packages %in% installed.packages()[,"Package"])] 

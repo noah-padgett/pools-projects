@@ -13,6 +13,7 @@
 
 <title>Home</title>
 
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -23,8 +24,6 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -33,6 +32,8 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -87,6 +88,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 
 
@@ -348,7 +350,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-11-19
+<strong>Last updated:</strong> 2021-02-18
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -379,16 +381,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettpoolsprojectstree34e8a9d533b389e2774e85964a5fc16f4488c3bdtargetblank34e8a9da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/pools-projects/tree/34e8a9d533b389e2774e85964a5fc16f4488c3bd" target="_blank">34e8a9d</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettpoolsprojectstreeea0a6a670107cbf902ba1757480e6ea270a65e03targetblankea0a6a6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/pools-projects/tree/ea0a6a670107cbf902ba1757480e6ea270a65e03" target="_blank">ea0a6a6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettpoolsprojectstree34e8a9d533b389e2774e85964a5fc16f4488c3bdtargetblank34e8a9da" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettpoolsprojectstreeea0a6a670107cbf902ba1757480e6ea270a65e03targetblankea0a6a6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/noah-padgett/pools-projects/tree/34e8a9d533b389e2774e85964a5fc16f4488c3bd" target="_blank">34e8a9d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/noah-padgett/pools-projects/tree/ea0a6a670107cbf902ba1757480e6ea270a65e03" target="_blank">ea0a6a6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -398,10 +400,41 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
+Untracked files:
+    Untracked:  analysis/development-study-CFA-invariance-test.Rmd
+    Untracked:  analysis/development-study-CFA.Rmd
+    Untracked:  analysis/development-study-EFA.Rmd
+    Untracked:  analysis/development-study-data-management.Rmd
+    Untracked:  analysis/study-1-power-calculation.Rmd
+    Untracked:  code/laplace_functions.R
+    Untracked:  code/pdf2png.R
+    Untracked:  code/utility_functions.R
+    Untracked:  data/efa_results_2021_01_06.csv
+    Untracked:  data/fit-test.RData
+    Untracked:  data/savedlocalfit.RData
+    Untracked:  diagrams/
+    Untracked:  item-review-2/expert-review-2-response1.pdf
+    Untracked:  item-review-2/expert-review-2-response2.pdf
+    Untracked:  item-review-2/expert-review-2-response3.pdf
+    Untracked:  item-review-2/pilot-data-item-review.xlsx
+    Untracked:  manuscript/
+    Untracked:  output/cfa-final-parameterEstimates.csv
+    Untracked:  output/cfa_results.csv
+    Untracked:  output/corr-plot.pdf
+    Untracked:  output/corr-residuals.pdf
+
 Unstaged changes:
+    Modified:   .Rprofile
+    Deleted:    .gitattributes
+    Modified:   .gitignore
     Modified:   analysis/index.Rmd
-    Modified:   analysis/pilot-study-CFA.Rmd
-    Modified:   analysis/pilot-study-EFA.Rmd
+    Deleted:    analysis/pilot-study-CFA.Rmd
+    Deleted:    analysis/pilot-study-EFA.Rmd
+    Deleted:    analysis/pilot-study-data-management.Rmd
+    Deleted:    analysis/pilot-study-power-calculation.Rmd
+    Modified:   code/load_packages.R
+    Modified:   item-review-1/response8_nov6.pdf
+    Modified:   item-review-2/Overview of Expert Review v2.0 Results.docx
 
 </code></pre>
 <p>
@@ -440,6 +473,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/noah-padgett/pools-projects/blob/90cbd51edf9dffc75dcfa9e5d9d8ee5136c1d33e/analysis/index.Rmd" target="_blank">90cbd51</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-11-19
+</td>
+<td>
+code-folding added
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/noah-padgett/pools-projects/90cbd51edf9dffc75dcfa9e5d9d8ee5136c1d33e/docs/index.html" target="_blank">90cbd51</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-11-19
+</td>
+<td>
+code-folding added
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -522,22 +589,45 @@ Start workflowr project.
 <li>Interactiveness of Learning, and</li>
 <li>Engagedness of Learning.</li>
 </ol>
-<p>An overview of the results of the first item review from subject matter experts can be obtained <a href="static/Overivew%20of%20Item%20Review%20Results.docx">here</a>.</p>
 <ul>
 <li><a href="pools-definitions.html">Construct Definitions</a></li>
 </ul>
-<div id="sampling-and-study-design" class="section level1">
-<h1>Sampling and Study Design</h1>
+<div id="pools-development-study" class="section level2">
+<h2>POOLS Development Study</h2>
+<ol style="list-style-type: decimal">
+<li><p>Scale construction and the initial item review by content experts</p>
 <ul>
-<li><a href="power-calculation.html">Power Analysis for Planned Missingness</a></li>
-</ul>
+<li><p>An overview of the results of the first item review from subject matter experts can be obtained <a href="static/Overivew%20of%20Expert%20Review%20v1.0%20Results.docx">here</a>.</p></li>
+<li><p>In general, we obtained useful insight into what kinds of questions we should ask participants. Experts gave suggestions for revising items and how to construct the scale in a useful way for the material of interest.</p></li>
+</ul></li>
+<li><p>POOLS v1.0 and Data Collection Plan</p>
+<ul>
+<li>Here, add extra details about the collection of the data collection.</li>
+</ul></li>
+<li><p><a href="development-study-data-management.html">Data Management and Split-Halves Creation</a></p></li>
+<li><p><a href="development-study-EFA.html">Exploratory Factor Analysis</a></p>
+<ul>
+<li><p>A four-factor solution was determined to be the most interpretable.</p></li>
+<li><p>An updated template for the scale can be found <a href="static/POOLS%20v2.0.docx">here</a>.</p></li>
+</ul></li>
+<li><p>Expert Review 2</p>
+<ul>
+<li><p>An overview of the results of the second item review from subject matter experts can be obtained <a href="static/Overivew%20of%20Expert%20Review%20v2.0%20Results.docx">here</a>.</p></li>
+<li><p>We got excellent feedback about the updated version of the scale. Combining the feedback from EFA with the comments from the experts lead to a revised version of the scale. This updated version is given can be found <a href="static/POOLS%20v2.1.docx">here</a>.</p></li>
+</ul></li>
+<li><p><a href="development-study-CFA.html">Confirmatory Factor Analysis</a></p>
+<ul>
+<li><p>CFA results indicated that the initial model supported by expert guidance did not fit these data well (<span class="math inline">\(\chi^2 (659) = 1448.6\)</span>, <span class="math inline">\(p&lt; .001\)</span>, CFI<span class="math inline">\(=0.84\)</span>, RMSEA<span class="math inline">\(=0.06\)</span>, SRMR<span class="math inline">\(=0.08\)</span>).</p></li>
+<li><p>After local fit assessment, we reduced the number of items per factor and allows for a few within factor residual covariances to create a more parsimonious assessment for use in larger studies. The global fit of the newly defined POOLS fit better (<span class="math inline">\(\chi^2(264) = 540.6\)</span>, <span class="math inline">\(p&lt; .001\)</span>, CFI <span class="math inline">\(=0.90\)</span>, RMSEA <span class="math inline">\(=0.06\)</span>, SRMR<span class="math inline">\(=0.06\)</span>).</p></li>
+</ul></li>
+<li><p><a href="development-study-CFA-invariance-test.html">CFA Invariance Testing (NOT IN MANUSCRIPT)</a></p></li>
+</ol>
 </div>
-<div id="pilot-study" class="section level1">
-<h1>Pilot Study</h1>
+<div id="future-sampling-design-for-planned-missingness" class="section level2">
+<h2>Future Sampling Design for Planned Missingness</h2>
 <ul>
+<li><p><a href="power-calculation.html">Power Analysis for Planned Missingness</a></p></li>
 <li><p><a href="pilot-study-power-calculation.html">Power Analysis for Pilot Data</a></p></li>
-<li><p><a href="pilot-study-EFA.html">Exploratory Factor Analysis</a></p></li>
-<li><p><a href="pilot-study-CFA.html">Confirmatory Factor Analysis</a></p></li>
 </ul>
 </div>
 
@@ -553,6 +643,8 @@ footer is added to webpages before the MathJax javascript. -->
     "HTML-CSS": { availableFonts: ["TeX"] }
   });
 </script>
+
+
 
 
 

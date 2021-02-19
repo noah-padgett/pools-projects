@@ -1,0 +1,199 @@
+%\documentclass[12pt]{apa7}
+\documentclass[man, noextraspace, floatsintext, 12pt]{apa7}
+%\documentclass[11pt]{article}
+
+% Line numbers for ease of pointing to lines
+\usepackage{lineno} %[pagewise]
+\linenumbers
+
+\usepackage{pdflscape}
+%Math typesetting packages
+\usepackage{amsfonts, amssymb, amsmath, latexsym, amsthm, mathabx, bm}
+%for URLs in-text 
+\usepackage{url}
+% ================
+% = Bibliography =
+% ================
+%APA style citations and references
+%\usepackage[utf8]{inputenc}
+%\usepackage{babel,csquotes,xpatch}
+\usepackage[backend=biber, style=apa, natbib]{biblatex}
+\addbibresource{references.bib}
+
+%\usepackage[natbibapa]{apacite} 
+% for hanging-indentation style using apacite
+%\setlength{\bibindent}{2.5em}
+%\setlength{\bibleftmargin}{0em}
+% ==========
+% = Floats =
+% ==========
+\usepackage{float}
+% include external pictures
+\usepackage{graphicx} %Graphics/figures
+% rotate figures/tables
+\usepackage{rotating} 
+% For professional tables
+\usepackage{booktabs,threeparttable, multirow} 
+\usepackage{tabularx}
+% For fixing the column widths
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% ===================
+% ==== Tikz Diagrams	==
+% ===================
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows,positioning,shapes,shapes.gates.logic.US,trees, intersections}
+% =======================
+% === Other useful packages ==
+% =======================
+\usepackage[T1]{fontenc} 
+\usepackage{placeins}
+\usepackage{hyperref}
+% subcaptions/subfigures %,justification=centered
+\usepackage[hypcap=true,width=\textwidth]{subcaption}
+% =============
+%  == formatting ==
+% =============
+% \usepackage[margin=1in]{geometry}
+% \setlength{\parindent}{0.5in}
+\usepackage{setspace}
+% \doublespacing
+
+% ==========
+% = Syntax =
+% ==========
+% For Computer Code in Appendix. I set the language for R, so will need to be changed for different languages
+\usepackage{listings}
+\lstset{
+    language=R,
+    basicstyle=\small \ttfamily,
+    commentstyle=\ttfamily ,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=none,
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    title=\lstname,
+    aboveskip=10pt,
+    belowskip=-10pt,
+    %escapeinside={},
+    %keywordstyle={},
+   % morekeywords={}
+    }%
+%~~
+\title{Development of a Perceptions of Online Learning Scale}
+\shorttitle{Development of POOLS} % For APA package
+\author{R. Noah Padgett, Shan Jiang, Laura Shero, Todd Kettler}
+%\author{REMOVED FOR PEER REVIEW}
+\authorsaffiliation{Baylor University}
+%\authorsaffiliations{REMOVED FOR PEER REVIEW}
+
+
+
+\abstract{%
+
+%\singlespacing
+} % End abstract
+
+\keywords{online learning, reliability, assembled validity, perceptions}
+
+%\authornote{REMOVED FOR PEER REVIEW}
+\authornote{
+R. Noah Padgett, Department of Educational Psychology, Baylor University; Shan Jiang, Department of Educational Psychology, Baylor University; Laura Shero, Department of Educational Psychology, Baylor University; Todd Kettler, Department of Educational Psychology, Baylor University.
+
+Correspondence concerning this article should be address to R. Noah Padgett, Department of Educational Psychology, One Bear Place \# 97304, Baylor University, Waco, TX 76798. Contact: \href{mailto:noah\_padgett1@baylor.edu}{\tt noah\_padgett1@baylor.edu} 
+}
+
+
+\begin{document}
+
+\maketitle
+
+Personality traits have been widely studied for their power to predict behavioral and affective responses (Funder, 1991; Oreg, 2003). In workplace studies, personality traits may be predictive of how people respond to change and innovation (Oreg, 2006). Specifically, individuals with personality profiles reflecting higher levels openness and internal locus of control (Lau & Woodman, 1995)) tend to be more welcoming of workplace change and innovation. 
+
+While online learning has been expanding with steady increased use in professional workplace training and higher education settings (Allen & Seaman, 2016), the expansion of online learning has still been much slower moving into K12 educational systems (Borup et al., 2013). However, the Covid-19 pandemic has recently accelerated the use of online learning in educational settings where on-the-ground learning was the dominant mode of delivery. As one might expect, responses and reactions to shifts toward online learning were quite varied. Some educators embraced the changes and saw online learning as an opportunity. On the other hand, other educators viewed online learning as at best a temporary stop-gap to avoid shutting down teaching and learning altogether. 
+
+As educational systems continue to operate in the Covid-19 pandemic, some educational leaders may see online learning as an opportunity to permanently innovate and diversify teaching and learning operations. In other words, they see online learning as more than a stop-gap: it is an innovation whose time has come. Those school systems may come out of the Covid-19 pandemic as innovative organizations using online learning pedagogies as efficient transformative learning platforms. Critical to any organizational change is finding the right team to embrace and support the innovative direction of the mission (Galambos et al., 2005). Personality traits may be viable indicators of educator profiles willing to embrace change and the possibilities rather than the drawbacks of online learning. 
+
+The purpose of this research is to validate the use of the Perceptions of Online Learning Scale (POOLS) and test hypotheses related to personality traits and perceptions of online scale. This study falls within the research paradigm of differential psychology (Lubinski, 2000) which studies the ways human traits are associated with behaviors including, in this case, organizational behaviors in educational systems (Sackett, 2020). 
+
+%%~~
+\section{Methods}
+
+Data will be treated as continuous \citep{Rhemtulla2012}.
+
+
+\section{Results}
+
+
+
+<< TABLE \ref{tb:ex} ABOUT HERE >>
+
+
+\begin{table}[ht]
+ \centering
+ \begin{threeparttable}
+ \caption{table template} 
+ \label{tb:ex}
+\begin{tabular}{lr}
+  \toprule
+hi & bye \\ 
+  \midrule
+  Stuff
+   \bottomrule
+\end{tabular}
+ \vspace*{1mm}
+ 	\begin{tablenotes}[para,flushleft]
+    {\small
+        \textit{Note.} 
+    }
+ 	\end{tablenotes}
+ \end{threeparttable}
+\end{table}
+ 
+
+
+
+\section{Discussion}
+
+
+
+\subsection{Recommendations for Use of the POOLS}
+
+
+
+\subsection{Limitations \& Delimitations for Use of the POOLS}
+
+
+
+\subsection{Conclusion}
+
+
+\subsection{Data Availability Statement}
+The data that support the findings of this study are openly available in Texas Data Repository at http://doi.org/XXXXXX (UPLOAD \& MAKE REFERENCE).
+Additional results are available in the online supplemental material as well (MAKE CITATION FOR ANALYSIS-WEBSITE).
+
+%~~
+% ============================= 
+\newpage
+\raggedright
+%\bibliographystyle{apacite} 
+% You may have to select another style. Remember: LaTeX, BibTeX, LaTeX, LaTex to get the citations to appear
+%\raggedright
+%\urlstyle{same}
+%\bibliography{references}
+\printbibliography
+%~~
+%%~~
+\appendix
+
+\section{POOL Items}
+
+
+\end{document}

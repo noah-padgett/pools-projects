@@ -17,21 +17,45 @@ POOLS is organized to measure four constructs
 3. Interactiveness of Learning, and
 4. Engagedness of Learning.
 
-An overview of the results of the first item review from subject matter experts can be obtained [here](static/Overivew of Item Review Results.docx).
-
-
 * [Construct Definitions](pools-definitions.html)
 
+## POOLS Development Study
 
-# Sampling and Study Design
+1. Scale construction and the initial item review by content experts
+
+    - An overview of the results of the first item review from subject matter experts can be obtained [here](static/Overivew of Expert Review v1.0 Results.docx).
+
+    - In general, we obtained useful insight into what kinds of questions we should ask participants. Experts gave suggestions for revising items and how to construct the scale in a useful way for the material of interest.
+
+2. POOLS v1.0 and Data Collection Plan
+
+    - Here, add extra details about the collection of the data collection.
+
+3. [Data Management and Split-Halves Creation](development-study-data-management.html)
+
+4. [Exploratory Factor Analysis](development-study-EFA.html)
+
+    - A four-factor solution was determined to be the most interpretable.
+
+    - An updated template for the scale can be found [here](static/POOLS v2.0.docx).
+
+5. Expert Review 2
+
+    - An overview of the results of the second item review from subject matter experts can be obtained [here](static/Overivew of Expert Review v2.0 Results.docx).
+
+    - We got excellent feedback about the updated version of the scale. Combining the feedback from EFA with the comments from the experts lead to a revised version of the scale. This updated version is given can be found [here](static/POOLS v2.1.docx).
+
+6. [Confirmatory Factor Analysis](development-study-CFA.html)
+
+    - CFA results indicated that the initial model supported by expert guidance did not fit these data well ($\chi^2 (659) = 1448.6$, $p< .001$, CFI$=0.84$, RMSEA$=0.06$, SRMR$=0.08$).
+
+    - After local fit assessment, we reduced the number of items per factor and allows for a few within factor residual covariances to create a more parsimonious assessment for use in larger studies. The global fit of the newly defined POOLS fit better ($\chi^2(264) = 540.6$, $p< .001$, CFI $=0.90$, RMSEA $=0.06$, SRMR$=0.06$).
+
+7. [CFA Invariance Testing (NOT IN MANUSCRIPT)](development-study-CFA-invariance-test.html)
+
+## Future Sampling Design for Planned Missingness
 
 * [Power Analysis for Planned Missingness](power-calculation.html)
 
-# Pilot Study
-
 * [Power Analysis for Pilot Data](pilot-study-power-calculation.html)
-
-* [Exploratory Factor Analysis](pilot-study-EFA.html)
-
-* [Confirmatory Factor Analysis](pilot-study-CFA.html)
 
